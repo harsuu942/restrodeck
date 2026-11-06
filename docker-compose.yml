@@ -1,0 +1,17 @@
+services:
+  whatslead-pos:
+    build: .
+    container_name: whatslead-pos-prod
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PORT=3000
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:3000/api/health')\" || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3

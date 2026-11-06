@@ -1,0 +1,165 @@
+/* WhatsLead Cloud POS Stylesheet - Modern Light Theme */
+
+/* Custom Smooth Transitions */
+#cart-drawer {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+}
+
+/* Custom Scrollbars */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 9999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Kitchen KDS Item Checkbox Checklist */
+.kds-item-row.prepared {
+  opacity: 0.55;
+  text-decoration: line-through;
+  background-color: #f0fdf4 !important;
+}
+
+/* KDS Rush Pulse for Late Orders (> 20 mins) */
+@keyframes kds-rush-pulse {
+  0%, 100% { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3); }
+  50% { border-color: #b91c1c; box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.6); }
+}
+.kds-card-rush {
+  animation: kds-rush-pulse 1.8s infinite;
+}
+
+/* ======================================================== */
+/* SENIOR DESIGN SYSTEM: CONSISTENT BORDERS & ELEVATION     */
+/* ======================================================== */
+.widget-card,
+.menu-item-card,
+.kds-card,
+.kiosk-dish-card,
+.pay-mode-btn,
+.tab-btn {
+  border-width: 1px !important;
+}
+
+.table-card {
+  border-width: 1px !important;
+  border-style: solid !important;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.table-card:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+}
+.table-card:active {
+  transform: scale(0.98);
+}
+.table-card.active-table {
+  border-color: #0f172a !important;
+  border-width: 1.5px !important;
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.12) !important;
+  transform: translateY(-1.5px);
+}
+
+/* Capsule Segmented Navigation */
+.nav-capsule {
+  background: #f1f5f9;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+.nav-tab-active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+}
+
+/* Floor Plan Section Tabs */
+.floor-filter-btn.active {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+}
+
+
+/* ======================================================== */
+/* 80mm & 58mm ESC/POS THERMAL PRINTER STYLES               */
+/* ======================================================== */
+@media print {
+  @page {
+    margin: 0;
+    size: auto;
+  }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Hide all app UI elements when printing */
+  body > * {
+    display: none !important;
+  }
+
+  /* Display ONLY the dedicated print receipt container */
+  #print-receipt-wrapper {
+    display: block !important;
+    position: static !important;
+    margin: 0 auto !important;
+    padding: 3mm 4mm !important;
+    width: 76mm !important;
+    max-width: 80mm !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: 'Courier New', Courier, monospace, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Compact 58mm (2-inch) roll paper override */
+  #print-receipt-wrapper.paper-58mm {
+    width: 54mm !important;
+    max-width: 58mm !important;
+    padding: 2mm 3mm !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  #print-receipt-wrapper * {
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  #print-receipt-wrapper img {
+    max-width: 100% !important;
+    filter: grayscale(100%) contrast(150%) !important;
+  }
+}
+
+/* Screen Preview for 58mm Paper Toggle in Modals */
+#thermal-receipt-content.paper-58mm,
+#thermal-kot-content.paper-58mm {
+  max-width: 250px;
+  margin: 0 auto;
+  font-size: 10px;
+  line-height: 1.25;
+}
+

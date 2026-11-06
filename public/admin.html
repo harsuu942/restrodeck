@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RestroDeck SuperAdmin | Multi-Tenant Restaurant Manager</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20261102_1400">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261102_1400">
+  <link rel="shortcut icon" href="favicon.ico?v=20261102_1400">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- TOP NAVBAR -->
+  <header class="bg-slate-950/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="apple-touch-icon.png?v=20261102_1400" alt="RestroDeck" class="w-10 h-10 rounded-2xl shadow-sm border border-emerald-500/20 object-cover shrink-0">
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-black text-lg tracking-tight text-white leading-tight">RestroDeck SuperAdmin</h1>
+            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-950 border border-emerald-800/80 px-2 py-0.5 rounded-full">Multi-Tenant Core</span>
+          </div>
+          <p class="text-xs text-slate-400">Cloud Outlets & Franchise Controller • restrodeck.com</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="/landing" class="hidden sm:inline-flex items-center space-x-1.5 text-xs text-slate-400 hover:text-white px-3 py-2 rounded-xl transition-colors">
+          <i class="fa-solid fa-globe text-emerald-400"></i>
+          <span>Public Landing</span>
+        </a>
+        <button onclick="openProvisionModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center space-x-2 active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-plus text-sm"></i>
+          <span>Add New Restaurant</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+
+    <!-- KPI STATS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-slate-800/60 border border-slate-700/60 p-5 rounded-2xl">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Client Outlets</span>
+        <div class="flex items-baseline space-x-2 mt-2">
+          <span class="text-3xl font-black text-white" id="stat-outlets">-</span>
+          <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> 100% Online</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-1" id="stat-suspended-sub">Physically isolated JSON stores</p>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 p-5 rounded-2xl">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Orders Processed</span>
+        <div class="flex items-baseline space-x-2 mt-2">
+          <span class="text-3xl font-black text-white" id="stat-orders">-</span>
+          <span class="text-xs text-slate-400">tickets</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-1">Across all cashier & waiter apps</p>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 p-5 rounded-2xl">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Aggregated Network Revenue</span>
+        <div class="flex items-baseline space-x-2 mt-2">
+          <span class="text-3xl font-black text-emerald-400" id="stat-revenue">₹ -</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-1">Direct to client bank accounts</p>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 p-5 rounded-2xl">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Server Latency & RAM</span>
+        <div class="flex items-baseline space-x-2 mt-2">
+          <span class="text-3xl font-black text-white">0.002 ms</span>
+          <span class="text-xs text-emerald-400 font-bold">~42 MB</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-1">Zero-dependency Python 3 core</p>
+      </div>
+    </div>
+
+    <!-- OUTLETS LISTING -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-3xl overflow-hidden shadow-xl">
+      <div class="p-5 border-b border-slate-700/60 flex items-center justify-between">
+        <div>
+          <h2 class="font-black text-base text-white flex items-center">
+            <i class="fa-solid fa-utensils text-emerald-400 mr-2"></i>Registered Restaurant Outlets
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Every outlet runs on its own isolated database with instant 1-click POS launching.</p>
+        </div>
+        <button onclick="fetchTenants()" class="text-xs font-bold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-xl border border-slate-700 transition-colors flex items-center space-x-1.5 cursor-pointer">
+          <i class="fa-solid fa-rotate text-emerald-400" id="refresh-icon"></i>
+          <span>Refresh</span>
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-900/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-slate-800">
+            <tr>
+              <th class="py-3.5 px-5">Restaurant Outlet</th>
+              <th class="py-3.5 px-5">Tenant Slug</th>
+              <th class="py-3.5 px-5 text-center">Status & Control</th>
+              <th class="py-3.5 px-5 text-center">Plan Tier</th>
+              <th class="py-3.5 px-5">Contact & UPI</th>
+              <th class="py-3.5 px-5 text-center">Tables</th>
+              <th class="py-3.5 px-5 text-center">Today's Orders</th>
+              <th class="py-3.5 px-5 text-right">Today's Revenue</th>
+              <th class="py-3.5 px-5 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tenants-table-body" class="divide-y divide-slate-800 text-slate-300">
+            <tr>
+              <td colspan="9" class="py-10 text-center text-slate-500">Loading restaurant tenants...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PROVISION NEW RESTAURANT MODAL -->
+  <div id="provision-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="closeProvisionModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center space-x-3 mb-5">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg">
+          <i class="fa-solid fa-store"></i>
+        </div>
+        <div>
+          <h3 class="font-black text-base text-white">Onboard New Restaurant</h3>
+          <p class="text-xs text-slate-400">Provisions an isolated database & dedicated POS link in 3 seconds</p>
+        </div>
+      </div>
+
+      <form onsubmit="handleProvisionSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Restaurant Display Name *</label>
+          <input type="text" id="prov-name" required placeholder="e.g. Royal Biryani House" oninput="autoGenerateSlug(this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Tenant ID / Subdomain *</label>
+            <input type="text" id="prov-slug" required placeholder="royalbiryani" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+            <p class="text-[10px] text-slate-500 mt-1">Slug: <span id="slug-preview">royalbiryani</span>.restrodeck.com</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Owner WhatsApp Phone *</label>
+            <input type="text" id="prov-phone" required placeholder="+91 98200 12345" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Owner UPI ID (for QR Billing)</label>
+            <input type="text" id="prov-upi" placeholder="royal@okhdfcbank" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">City / Location</label>
+            <input type="text" id="prov-address" placeholder="Bandra West, Mumbai" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Franchise Brand / Chain Association</label>
+          <select id="prov-franchise-group" onchange="handleFranchiseGroupChange(this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 font-bold">
+            <option value="">Standalone / Independent Outlet</option>
+            <option value="spicesymphony" data-brand="Spice Symphony">👑 Spice Symphony Franchise Group</option>
+            <option value="cafemilano" data-brand="Cafe Milano">👑 Cafe Milano Franchise Group</option>
+            <option value="__new__">+ Create New Franchise Brand Chain...</option>
+          </select>
+          <p class="text-[10px] text-slate-500 mt-1">Branches in the same group share the multi-outlet switcher in their POS header.</p>
+        </div>
+
+        <div id="new-brand-container" style="display: none;">
+          <label class="block text-xs font-bold text-purple-300 mb-1">New Franchise Brand Name *</label>
+          <input type="text" id="prov-brand-name" placeholder="e.g. Royal Chai House" class="w-full bg-slate-950 border border-purple-500/50 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-purple-400">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Subscription Plan Tier *</label>
+          <select id="prov-plan" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-bold">
+            <option value="pro" selected>Pro Enterprise Core (₹799/mo) — Full Suite Unlocked</option>
+            <option value="starter">Starter Cloud (₹599/mo) — Single Counter & Invoices</option>
+            <option value="franchise">Franchise Multi-Deck (₹1,499/mo) — Multi-Outlet HQ</option>
+          </select>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex items-center justify-end space-x-2.5">
+          <button type="button" onclick="closeProvisionModal()" class="px-4 py-2.5 text-xs font-bold text-slate-400 hover:text-white rounded-xl">Cancel</button>
+          <button type="submit" id="btn-submit-provision" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+            <i class="fa-solid fa-rocket"></i>
+            <span>Launch Outlet</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT RESTAURANT PROFILE MODAL -->
+  <div id="edit-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeEditModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center space-x-3 mb-5">
+        <div class="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-lg">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+        <div>
+          <h3 class="font-black text-base text-white">Update Restaurant Profile</h3>
+          <p class="text-xs text-slate-400">Modify branding, billing contact, legal GSTIN, and franchise chain</p>
+        </div>
+      </div>
+
+      <form onsubmit="handleEditSubmit(event)" class="space-y-4">
+        <input type="hidden" id="edit-tenant-id">
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-300 mb-1">Restaurant Display Name *</label>
+            <input type="text" id="edit-name" required placeholder="e.g. Spice Symphony Bistro" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1">Tenant ID (Slug)</label>
+            <input type="text" id="edit-slug-display" disabled class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-500 font-mono cursor-not-allowed">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Tagline / Subheading</label>
+          <input type="text" id="edit-tagline" placeholder="e.g. Modern Dine-in, Takeaway & Cloud Kitchen" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Owner WhatsApp Phone *</label>
+            <input type="text" id="edit-phone" required placeholder="+91 98200 12345" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Owner UPI ID (for QR Billing)</label>
+            <input type="text" id="edit-upi" placeholder="outlet@okhdfcbank" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Full Physical Outlet Address</label>
+          <input type="text" id="edit-address" placeholder="Shop 14, High Street Avenue, Mumbai" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">GSTIN Number</label>
+            <input type="text" id="edit-gstin" placeholder="27AADCS1234F1Z5" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-mono uppercase">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">FSSAI License Number</label>
+            <input type="text" id="edit-fssai" placeholder="11521012000456" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-mono">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Subscription Plan Tier *</label>
+            <select id="edit-plan" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-bold">
+              <option value="starter">Starter Cloud (₹599/mo)</option>
+              <option value="pro">Pro Enterprise Core (₹799/mo)</option>
+              <option value="franchise">Franchise Multi-Deck (₹1,499/mo)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Franchise Brand Association</label>
+            <select id="edit-franchise-group" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 font-bold">
+              <option value="">Standalone / Independent Outlet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex items-center justify-end space-x-2.5">
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2.5 text-xs font-bold text-slate-400 hover:text-white rounded-xl cursor-pointer">Cancel</button>
+          <button type="submit" id="btn-submit-edit" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Save Restaurant Updates</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let _allTenants = [];
+
+    async function fetchTenants() {
+      const icon = document.getElementById("refresh-icon");
+      if (icon) icon.classList.add("fa-spin");
+      try {
+        const res = await fetch("/api/tenants/list");
+        const data = await res.json();
+        if (data.success && data.tenants) {
+          _allTenants = data.tenants;
+          updateFranchiseGroupOptions(data.tenants);
+          renderTenants(data.tenants);
+        }
+      } catch (err) {
+        console.error("Failed to load tenants:", err);
+      } finally {
+        if (icon) icon.classList.remove("fa-spin");
+      }
+    }
+
+    function updateFranchiseGroupOptions(tenants) {
+      const select = document.getElementById("prov-franchise-group");
+      if (!select) return;
+      const currentVal = select.value;
+      const groupMap = new Map();
+      tenants.forEach(t => {
+        if (t.franchise_group) {
+          const name = t.brand_name || t.franchise_group;
+          const count = (groupMap.get(t.franchise_group)?.count || 0) + 1;
+          groupMap.set(t.franchise_group, { brand_name: name, count });
+        }
+      });
+
+      let html = `<option value="">Standalone / Independent Outlet</option>`;
+      groupMap.forEach((info, grp) => {
+        html += `<option value="${grp}" data-brand="${info.brand_name}">👑 ${info.brand_name} Chain (${info.count} ${info.count === 1 ? 'branch' : 'branches'})</option>`;
+      });
+      html += `<option value="__new__">+ Create New Franchise Brand Chain...</option>`;
+      select.innerHTML = html;
+      if ([...select.options].some(o => o.value === currentVal)) {
+        select.value = currentVal;
+      }
+    }
+
+    function handleFranchiseGroupChange(val) {
+      const newBrandBox = document.getElementById("new-brand-container");
+      const planSelect = document.getElementById("prov-plan");
+      if (val === "__new__") {
+        if (newBrandBox) newBrandBox.style.display = "block";
+        const brandInput = document.getElementById("prov-brand-name");
+        if (brandInput) brandInput.focus();
+        if (planSelect) planSelect.value = "franchise";
+      } else if (val) {
+        if (newBrandBox) newBrandBox.style.display = "none";
+        if (planSelect) planSelect.value = "franchise";
+      } else {
+        if (newBrandBox) newBrandBox.style.display = "none";
+      }
+    }
+
+    function openAddBranchModal(group, brandName) {
+      openProvisionModal();
+      const select = document.getElementById("prov-franchise-group");
+      if (select) {
+        select.value = group;
+        handleFranchiseGroupChange(group);
+      }
+      const planSelect = document.getElementById("prov-plan");
+      if (planSelect) planSelect.value = "franchise";
+      const nameInput = document.getElementById("prov-name");
+      if (nameInput) {
+        nameInput.value = `${brandName} - `;
+        nameInput.focus();
+      }
+      autoGenerateSlug(nameInput.value);
+    }
+
+    async function assignFranchiseGroupPrompt(tenantId, currentName) {
+      const brandName = prompt(`Link '${currentName}' (${tenantId}) to a Franchise Brand Chain.\n\nEnter Brand Name (e.g. 'Spice Symphony' or 'Cafe Milano')\nLeave blank to unlink and make Standalone:`);
+      if (brandName === null) return;
+      const trimmed = brandName.trim();
+      const group = trimmed ? trimmed.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 20) : "";
+      try {
+        const res = await fetch("/api/tenants/update-group", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            tenant_id: tenantId,
+            franchise_group: group,
+            brand_name: trimmed
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          await fetchTenants();
+        } else {
+          alert("Error: " + (data.message || "Failed to update franchise affiliation"));
+        }
+      } catch (err) {
+        alert("Network error: " + err);
+      }
+    }
+
+    function renderTenants(tenants) {
+      const tbody = document.getElementById("tenants-table-body");
+      if (!tbody) return;
+
+      let totalRevenue = 0;
+      let totalOrders = 0;
+      let activeCount = 0;
+      let suspendedCount = 0;
+
+      tbody.innerHTML = tenants.map(t => {
+        totalRevenue += (t.revenue || 0);
+        totalOrders += (t.orders_count || 0);
+        const isActive = t.is_active !== false;
+        if (isActive) activeCount++; else suspendedCount++;
+
+        const posUrl = t.tenant_id === 'default' ? '/pos' : `/pos?tenant=${t.tenant_id}`;
+        const waMsg = encodeURIComponent(`Hi ${t.name}, your RestroDeck Cloud POS terminal is ready!\n\nAccess Link: https://${t.tenant_id}.restrodeck.com/pos\nDirect Link: http://localhost:3000/pos?tenant=${t.tenant_id}\n\nYour staff can log in and punch orders table-side immediately.`);
+        const cleanPhone = (t.phone || '').replace(/[^0-9]/g, '');
+
+        const plan = (t.plan || 'pro').toLowerCase();
+
+        const statusHtml = isActive ? `
+          <div class="flex items-center justify-center space-x-1.5">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-950/80 text-emerald-400 border border-emerald-700/60 shadow-2xs">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span>Live
+            </span>
+            <button onclick="toggleTenantStatus('${t.tenant_id}', true, '${t.name.replace(/'/g, "\\'")}')" title="Deactivate POS & Login access" class="text-rose-400 hover:text-white bg-rose-950/50 hover:bg-rose-600 border border-rose-800/70 px-2 py-0.5 rounded-md text-[10px] font-bold transition-all cursor-pointer">
+              <i class="fa-solid fa-ban text-[9px] mr-0.5"></i>Suspend
+            </button>
+          </div>
+        ` : `
+          <div class="flex items-center justify-center space-x-1.5">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-950/80 text-rose-400 border border-rose-700/60 shadow-2xs">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1"></span>Suspended
+            </span>
+            <button onclick="toggleTenantStatus('${t.tenant_id}', false, '${t.name.replace(/'/g, "\\'")}')" title="Reactivate POS access" class="text-emerald-400 hover:text-white bg-emerald-950/60 hover:bg-emerald-600 border border-emerald-800/80 px-2 py-0.5 rounded-md text-[10px] font-bold transition-all cursor-pointer">
+              <i class="fa-solid fa-play text-[9px] mr-0.5"></i>Activate
+            </button>
+          </div>
+        `;
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition-colors ${!isActive ? 'opacity-70 bg-rose-950/10' : ''}">
+            <td class="py-4 px-5">
+              <div class="font-bold text-white text-sm flex items-center space-x-1.5">
+                <span>${t.name}</span>
+                ${!isActive ? '<span class="text-[9px] bg-rose-900/80 text-rose-300 border border-rose-700 px-1.5 py-0.2 rounded font-black uppercase">LOCKED</span>' : ''}
+              </div>
+              <div class="text-[11px] text-slate-400 truncate max-w-xs">${t.address || 'Address not configured'}</div>
+              <div class="mt-1.5 flex items-center gap-1.5 flex-wrap">
+                ${t.franchise_group ? `
+                  <span class="inline-flex items-center text-[10px] font-black px-2 py-0.5 rounded-md bg-purple-950/80 text-purple-300 border border-purple-800/70 shadow-2xs">
+                    <i class="fa-solid fa-crown text-[9px] mr-1 text-purple-400"></i>${t.brand_name || t.franchise_group} Chain
+                  </span>
+                  <button onclick="openAddBranchModal('${t.franchise_group}', '${(t.brand_name || t.franchise_group).replace(/'/g, "\\'")}')" class="text-[10px] font-bold text-emerald-400 hover:text-white bg-emerald-950/50 hover:bg-emerald-600 border border-emerald-800/60 px-2 py-0.5 rounded-md transition-all cursor-pointer flex items-center space-x-1" title="Add another sister branch to this brand">
+                    <i class="fa-solid fa-plus text-[9px]"></i>
+                    <span>Add Branch</span>
+                  </button>
+                  <button onclick="assignFranchiseGroupPrompt('${t.tenant_id}', '${t.name.replace(/'/g, "\\'")}')" class="text-[9px] text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 px-1.5 py-0.5 rounded border border-slate-700" title="Edit or unlink brand">
+                    <i class="fa-solid fa-pen text-[8px]"></i>
+                  </button>
+                ` : `
+                  <span class="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800/70 text-slate-400 border border-slate-700">
+                    Standalone Outlet
+                  </span>
+                  <button onclick="assignFranchiseGroupPrompt('${t.tenant_id}', '${t.name.replace(/'/g, "\\'")}')" class="text-[10px] font-bold text-purple-400 hover:text-white bg-purple-950/40 hover:bg-purple-700/60 border border-purple-800/50 px-2 py-0.5 rounded-md transition-all cursor-pointer flex items-center space-x-1" title="Associate this outlet with a Franchise Group">
+                    <i class="fa-solid fa-link text-[8px]"></i>
+                    <span>Link to Chain</span>
+                  </button>
+                `}
+              </div>
+            </td>
+            <td class="py-4 px-5">
+              <span class="font-mono ${isActive ? 'text-emerald-400 bg-emerald-950/60 border-emerald-800/60' : 'text-rose-400 bg-rose-950/60 border-rose-800/60'} border px-2 py-0.5 rounded-md text-[11px]">
+                ${t.tenant_id}
+              </span>
+              ${t.is_default ? '<span class="ml-1 text-[9px] bg-slate-700 text-slate-300 px-1.5 py-0.2 rounded font-bold uppercase">Default</span>' : ''}
+            </td>
+            <td class="py-4 px-5 text-center">
+              ${statusHtml}
+            </td>
+            <td class="py-4 px-5 text-center">
+              <select onchange="updateTenantPlan('${t.tenant_id}', this.value)" class="bg-slate-900 text-[11px] font-bold rounded-lg px-2.5 py-1 border ${plan === 'starter' ? 'text-slate-300 border-slate-700' : (plan === 'franchise' ? 'text-purple-300 border-purple-700' : 'text-emerald-400 border-emerald-700')} focus:outline-none cursor-pointer shadow-xs">
+                <option value="starter" ${plan === 'starter' ? 'selected' : ''}>Starter (₹599)</option>
+                <option value="pro" ${plan === 'pro' ? 'selected' : ''}>Pro Core (₹799)</option>
+                <option value="franchise" ${plan === 'franchise' ? 'selected' : ''}>Franchise (₹1,499)</option>
+              </select>
+            </td>
+            <td class="py-4 px-5">
+              <div class="font-medium text-slate-300">${t.phone || 'N/A'}</div>
+              <div class="text-[10px] text-slate-400 font-mono">${t.upi_vpa || 'UPI pending'}</div>
+            </td>
+            <td class="py-4 px-5 text-center font-bold text-slate-300">${t.tables_count || 0}</td>
+            <td class="py-4 px-5 text-center font-bold text-white">${t.orders_count || 0}</td>
+            <td class="py-4 px-5 text-right font-black text-emerald-400">₹ ${(t.revenue || 0).toLocaleString('en-IN')}</td>
+            <td class="py-4 px-5 text-right space-x-1.5 whitespace-nowrap">
+              <button onclick="openEditModal('${t.tenant_id}')" class="inline-flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-bold text-[11px] px-2.5 py-1.5 rounded-lg transition-transform active:scale-95 cursor-pointer" title="Edit Restaurant Profile">
+                <i class="fa-solid fa-pen-to-square text-[10px] text-blue-400"></i>
+                <span>Edit</span>
+              </button>
+              ${isActive ? `
+                <a href="${posUrl}" target="_blank" class="inline-flex items-center space-x-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition-transform active:scale-95">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                  <span>Open POS</span>
+                </a>
+              ` : `
+                <a href="${posUrl}" target="_blank" title="Terminal is Suspended (Test Deactivated Screen)" class="inline-flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 text-rose-400 border border-rose-800/80 font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition-transform active:scale-95">
+                  <i class="fa-solid fa-lock text-[10px]"></i>
+                  <span>Locked POS</span>
+                </a>
+              `}
+              ${cleanPhone ? `
+                <a href="https://wa.me/${cleanPhone}?text=${waMsg}" target="_blank" title="Send WhatsApp Welcome Kit" class="inline-flex items-center justify-center bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 w-8 h-8 rounded-lg transition-colors">
+                  <i class="fa-brands fa-whatsapp text-sm"></i>
+                </a>
+              ` : ''}
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      document.getElementById("stat-outlets").innerText = activeCount;
+      const suspendedSub = document.getElementById("stat-suspended-sub");
+      if (suspendedSub) {
+        suspendedSub.innerText = `${suspendedCount} suspended • ${tenants.length} total outlets`;
+      }
+      document.getElementById("stat-orders").innerText = totalOrders.toLocaleString('en-IN');
+      document.getElementById("stat-revenue").innerText = `₹ ${totalRevenue.toLocaleString('en-IN')}`;
+    }
+
+    function openProvisionModal() {
+      const modal = document.getElementById("provision-modal");
+      if (modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.getElementById("prov-name").focus();
+      }
+    }
+
+    function closeProvisionModal() {
+      const modal = document.getElementById("provision-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    }
+
+    function openEditModal(tenantId) {
+      const t = _allTenants.find(item => item.tenant_id === tenantId);
+      if (!t) return;
+
+      document.getElementById("edit-tenant-id").value = t.tenant_id;
+      document.getElementById("edit-slug-display").value = t.tenant_id + (t.is_default ? " (Primary Default)" : "");
+      document.getElementById("edit-name").value = t.name || "";
+      document.getElementById("edit-tagline").value = t.tagline || "";
+      document.getElementById("edit-phone").value = t.phone || "";
+      document.getElementById("edit-upi").value = t.upi_vpa || "";
+      document.getElementById("edit-address").value = t.address || "";
+      document.getElementById("edit-gstin").value = t.gstin || "";
+      document.getElementById("edit-fssai").value = t.fssai || "";
+      document.getElementById("edit-plan").value = (t.plan || "pro").toLowerCase();
+
+      // Populate franchise options in edit modal
+      const editGroupSelect = document.getElementById("edit-franchise-group");
+      if (editGroupSelect) {
+        const groupMap = new Map();
+        _allTenants.forEach(item => {
+          if (item.franchise_group) {
+            const name = item.brand_name || item.franchise_group;
+            groupMap.set(item.franchise_group, name);
+          }
+        });
+        let html = `<option value="">Standalone / Independent Outlet</option>`;
+        groupMap.forEach((brandName, grp) => {
+          html += `<option value="${grp}">👑 ${brandName} Chain</option>`;
+        });
+        editGroupSelect.innerHTML = html;
+        editGroupSelect.value = t.franchise_group || "";
+      }
+
+      const modal = document.getElementById("edit-modal");
+      if (modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.getElementById("edit-name").focus();
+      }
+    }
+
+    function closeEditModal() {
+      const modal = document.getElementById("edit-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    }
+
+    async function handleEditSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-submit-edit");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Saving Changes...</span>`;
+
+      const tenantId = document.getElementById("edit-tenant-id").value;
+      const groupSelect = document.getElementById("edit-franchise-group");
+      const franchiseGroup = groupSelect ? groupSelect.value : "";
+      let brandName = "";
+      if (franchiseGroup) {
+        const opt = groupSelect.options[groupSelect.selectedIndex];
+        brandName = opt ? opt.text.replace(/👑|\s*Chain/g, "").trim() : franchiseGroup;
+      }
+
+      const payload = {
+        tenant_id: tenantId,
+        name: document.getElementById("edit-name").value.trim(),
+        tagline: document.getElementById("edit-tagline").value.trim(),
+        phone: document.getElementById("edit-phone").value.trim(),
+        upi_vpa: document.getElementById("edit-upi").value.trim(),
+        address: document.getElementById("edit-address").value.trim(),
+        gstin: document.getElementById("edit-gstin").value.trim(),
+        fssai: document.getElementById("edit-fssai").value.trim(),
+        plan: franchiseGroup ? "franchise" : document.getElementById("edit-plan").value,
+        franchise_group: franchiseGroup,
+        brand_name: brandName
+      };
+
+      try {
+        const res = await fetch("/api/tenants/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeEditModal();
+          await fetchTenants();
+          alert(`✅ '${data.restaurant.name}' (${tenantId}) profile updated successfully!`);
+        } else {
+          alert("Error: " + (data.message || "Failed to update restaurant profile"));
+        }
+      } catch (err) {
+        alert("Failed to connect to server: " + err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span>Save Restaurant Updates</span>`;
+      }
+    }
+
+    function autoGenerateSlug(name) {
+      const slug = name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 18);
+      document.getElementById("prov-slug").value = slug;
+      document.getElementById("slug-preview").innerText = slug || "outlet";
+    }
+
+    async function handleProvisionSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-submit-provision");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Provisioning...</span>`;
+
+      const franchiseGroupSelect = document.getElementById("prov-franchise-group");
+      let franchiseGroup = franchiseGroupSelect ? franchiseGroupSelect.value : "";
+      let brandName = "";
+
+      if (franchiseGroup === "__new__") {
+        brandName = document.getElementById("prov-brand-name").value.trim();
+        if (!brandName) {
+          alert("Please enter a Brand Name for the new franchise chain.");
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-rocket"></i><span>Launch Outlet</span>`;
+          return;
+        }
+        franchiseGroup = brandName.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 20);
+      } else if (franchiseGroup) {
+        const opt = franchiseGroupSelect.options[franchiseGroupSelect.selectedIndex];
+        brandName = opt ? (opt.getAttribute("data-brand") || franchiseGroup) : franchiseGroup;
+      }
+
+      const payload = {
+        name: document.getElementById("prov-name").value.trim(),
+        tenant_id: document.getElementById("prov-slug").value.trim(),
+        phone: document.getElementById("prov-phone").value.trim(),
+        upi_vpa: document.getElementById("prov-upi").value.trim(),
+        address: document.getElementById("prov-address").value.trim(),
+        plan: franchiseGroup ? "franchise" : document.getElementById("prov-plan").value,
+        franchise_group: franchiseGroup,
+        brand_name: brandName
+      };
+
+      try {
+        const res = await fetch("/api/tenants/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeProvisionModal();
+          await fetchTenants();
+          alert(`🎉 Success! '${data.name}' onboarded!\n\nDedicated POS URL:\n${data.url}`);
+        } else {
+          alert("Error: " + (data.message || "Failed to provision"));
+        }
+      } catch (err) {
+        alert("Failed to connect to server: " + err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-rocket"></i><span>Launch Outlet</span>`;
+      }
+    }
+
+    async function updateTenantPlan(tenantId, newPlan) {
+      try {
+        const res = await fetch("/api/tenants/update-plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tenant_id: tenantId, plan: newPlan })
+        });
+        const data = await res.json();
+        if (data.success) {
+          await fetchTenants();
+        } else {
+          alert("Error: " + (data.message || "Failed to update plan"));
+          await fetchTenants();
+        }
+      } catch (err) {
+        alert("Failed to update plan: " + err);
+        await fetchTenants();
+      }
+    }
+
+    async function toggleTenantStatus(tenantId, currentActive, outletName) {
+      const confirmMsg = currentActive
+        ? `⚠️ Are you sure you want to DEACTIVATE & SUSPEND '${outletName}' (${tenantId})?\n\nStaff and cashiers will be immediately BLOCKED from logging in or punching orders in POS & Kiosk.`
+        : `✅ Reactivate '${outletName}' (${tenantId})?\n\nPOS billing, staff login, and ordering will be restored immediately.`;
+
+      if (!confirm(confirmMsg)) return;
+
+      try {
+        const res = await fetch("/api/tenants/toggle-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tenant_id: tenantId, is_active: !currentActive })
+        });
+        const data = await res.json();
+        if (data.success) {
+          await fetchTenants();
+        } else {
+          alert("Error: " + (data.message || "Failed to update outlet status"));
+        }
+      } catch (err) {
+        alert("Connection error: " + err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", fetchTenants);
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <mask id="domeMask">
+      <rect width="64" height="64" fill="white"/>
+      <!-- Curved reflection slit -->
+      <path d="M 23.5 19 C 20.5 21.5 19 24.5 18.5 27 C 19.5 27 21 24.5 23.5 22.5 C 25 21 26 20.2 26 19.2 Z" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- VIBRANT EMERALD SQUIRCLE -->
+  <rect width="64" height="64" rx="14" fill="url(#emeraldGrad)"/>
+
+  <!-- WHITE LOGO MARK -->
+  <g fill="#FFFFFF">
+    <!-- Cloche Knob -->
+    <circle cx="32" cy="13.5" r="3"/>
+
+    <!-- Cloche Dome with Highlight Cutout -->
+    <path d="M 16 28 C 16 18.5 23 15 32 15 C 41 15 48 18.5 48 28 Z" mask="url(#domeMask)"/>
+
+    <!-- Cloche Base Tray Bar -->
+    <rect x="15" y="29.5" width="34" height="3.5" rx="1.75"/>
+
+    <!-- Letter R Vertical Stem -->
+    <rect x="15" y="35" width="6.5" height="16.5" rx="1.75"/>
+
+    <!-- Top Deck Horizontal Bar -->
+    <rect x="24.5" y="35" width="19" height="3.5" rx="1.75"/>
+
+    <!-- Middle Deck Horizontal Bar -->
+    <rect x="24.5" y="41" width="14" height="3.5" rx="1.75"/>
+
+    <!-- Letter R Diagonal Leg -->
+    <path d="M 29 40.5 L 41.5 51.5 C 42.2 52.2 43.5 52.2 44.2 51.5 L 45.2 50.3 C 45.8 49.6 45.6 48.6 44.8 48 L 34 39 Z"/>
+  </g>
+</svg>

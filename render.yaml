@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: restrodeck-pos
+    runtime: python
+    buildCommand: ""
+    startCommand: python3 server.py
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    disk:
+      name: pos-data
+      mountPath: /app/data
+      sizeGB: 1

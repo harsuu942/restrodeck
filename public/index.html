@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RestroDeck Cloud POS | The Operating Deck for Modern Restaurants</title>
+  
+  <!-- FAVICON & APP ICONS -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20261102_1400">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261102_1400">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261102_1400">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20261102_1400">
+  <link rel="shortcut icon" href="favicon.ico?v=20261102_1400">
+  <meta name="theme-color" content="#10b981">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css?v=20261102_1250">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            whatsapp: '#25D366',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden">
+
+  <!-- ======================================================== -->
+  <!-- TOP NAVIGATION BAR (SENIOR-LEVEL AESTHETIC DESIGN)        -->
+  <!-- ======================================================== -->
+  <header class="bg-white text-slate-800 px-3 sm:px-4 lg:px-5 py-2 flex items-center justify-between border-b border-slate-200/90 shadow-2xs select-none shrink-0 z-40 gap-2 lg:gap-3 relative w-full overflow-visible">
+    <!-- BRAND / OUTLET IDENTITY -->
+    <div class="flex items-center space-x-2.5 shrink-0 max-w-[210px] md:max-w-[240px] xl:max-w-[280px]">
+      <img src="apple-touch-icon.png?v=20261102_1400" alt="RestroDeck" class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl shadow-xs border border-emerald-500/20 object-cover shrink-0">
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center space-x-1.5 flex-nowrap">
+          <h1 class="font-black text-xs sm:text-sm tracking-tight text-slate-900 leading-tight truncate" id="brand-name" title="Spice Symphony Bistro">Spice Symphony</h1>
+          
+          <!-- FRANCHISE BRANCH SWITCHER (Visible on Franchise plan) -->
+          <div id="franchise-branch-switcher" style="display: none;" class="relative inline-flex items-center shrink-0">
+            <button onclick="toggleBranchSwitcher(event)" type="button" class="inline-flex items-center space-x-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] font-black bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300 cursor-pointer shadow-2xs transition-colors" title="Switch Branch">
+              <i class="fa-solid fa-store text-purple-600 text-[8px]"></i>
+              <span id="current-branch-label" class="max-w-[60px] truncate">Main</span>
+              <i class="fa-solid fa-chevron-down text-[7px] text-purple-600"></i>
+            </button>
+            <div id="branch-switcher-dropdown" style="display: none;" class="absolute left-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-purple-200 py-2.5 z-50 text-slate-800 animate-in fade-in duration-150">
+              <div class="px-3 pb-1.5 mb-1.5 border-b border-slate-100 flex items-center justify-between text-[10px] font-black uppercase text-slate-400">
+                <span>Franchise Chain Outlets</span>
+                <span class="text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded font-bold">Sister Branches</span>
+              </div>
+              <div id="branch-switcher-list" class="space-y-0.5 px-1.5 max-h-56 overflow-y-auto">
+                <!-- Dynamically populated -->
+              </div>
+              <div class="pt-2 mt-1.5 border-t border-slate-100 px-2 space-y-1">
+                <button onclick="openFranchiseHQ()" type="button" class="w-full text-center block text-[11px] font-extrabold text-purple-700 hover:text-purple-900 hover:bg-purple-50 py-1.5 rounded-xl transition-colors cursor-pointer">
+                  <i class="fa-solid fa-sliders text-xs mr-1"></i> Franchise HQ Controller
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PLAN BADGE (Shown on Starter / Pro, hidden when Franchise branch switcher is active) -->
+          <span id="plan-badge-indicator" class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
+            PRO CORE
+          </span>
+        </div>
+        <div class="flex items-center space-x-1.5 text-[10px] text-slate-400 font-medium truncate mt-0.5">
+          <span class="inline-flex items-center space-x-1 shrink-0 text-emerald-600 font-bold">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="hidden sm:inline">Live POS</span>
+          </span>
+          <span class="text-slate-300 shrink-0 hidden sm:inline">•</span>
+          <p class="truncate" id="outlet-tagline">Main Terminal • restrodeck.com</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: MAIN MODULE TABS (SEGMENTED CAPSULE) + MORE DROPDOWN -->
+    <div class="hidden md:flex items-center gap-1.5 shrink-0">
+      <nav id="main-nav" class="flex items-center bg-slate-100/90 p-1 rounded-2xl border border-slate-200/90 text-xs font-bold gap-0.5 shadow-2xs">
+        <button onclick="switchTab('pos')" id="tab-pos" class="tab-btn px-2.5 sm:px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all bg-white text-slate-900 shadow-xs border border-slate-200/90 cursor-pointer shrink-0 font-black">
+          <i class="fa-solid fa-cash-register text-emerald-600 text-xs"></i>
+          <span>Billing<span class="hidden 2xl:inline"> & Tables</span></span>
+        </button>
+        <button onclick="switchTab('kds')" id="tab-kds" class="tab-btn px-2 sm:px-2.5 py-1.5 rounded-xl flex items-center space-x-1 transition-all text-slate-600 hover:text-slate-900 hover:bg-white/70 cursor-pointer shrink-0 font-bold border border-transparent">
+          <i class="fa-solid fa-fire-burner text-amber-600 text-xs"></i>
+          <span>Kitchen</span>
+          <span id="kds-badge" class="bg-amber-500 text-slate-950 text-[9px] px-1.5 py-0.2 rounded-full font-black ml-0.5">2</span>
+        </button>
+        <button onclick="switchTab('inventory')" id="tab-inventory" class="tab-btn px-2 sm:px-2.5 py-1.5 rounded-xl flex items-center space-x-1 transition-all text-slate-600 hover:text-slate-900 hover:bg-white/70 cursor-pointer shrink-0 font-bold border border-transparent">
+          <i class="fa-solid fa-boxes-stacked text-teal-600 text-xs"></i>
+          <span>Inventory</span>
+          <span class="bg-amber-100 text-amber-900 border border-amber-300/80 text-[8px] px-1.5 py-0.2 rounded font-bold hidden xl:inline-block">2 Low</span>
+        </button>
+        <button onclick="switchTab('aggregators')" id="tab-aggregators" class="tab-btn px-2 sm:px-2.5 py-1.5 rounded-xl flex items-center space-x-1 transition-all text-slate-600 hover:text-slate-900 hover:bg-white/70 cursor-pointer shrink-0 font-bold border border-transparent">
+          <i class="fa-solid fa-motorcycle text-slate-600 text-xs"></i>
+          <span>Online<span class="hidden 2xl:inline"> Orders</span></span>
+        </button>
+        <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-2 sm:px-2.5 py-1.5 rounded-xl flex items-center space-x-1 transition-all text-slate-600 hover:text-slate-900 hover:bg-white/70 cursor-pointer shrink-0 font-bold border border-transparent">
+          <i class="fa-solid fa-chart-pie text-slate-600 text-xs"></i>
+          <span>Reports</span>
+        </button>
+        <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-2 sm:px-2.5 py-1.5 rounded-xl flex items-center space-x-1 transition-all text-slate-600 hover:text-slate-900 hover:bg-white/70 cursor-pointer shrink-0 font-bold border border-transparent">
+          <i class="fa-solid fa-wand-magic-sparkles text-purple-600 text-xs"></i>
+          <span class="hidden xl:inline">AI </span><span>Copilot</span>
+        </button>
+      </nav>
+
+      <!-- MORE MODULES (STYLED SIMILAR TO CASHIER BUTTON) -->
+      <div class="relative shrink-0 flex items-center" id="more-menu-container">
+        <button onclick="toggleMoreMenu(event)" id="tab-more-btn" type="button" class="flex items-center bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl px-2.5 sm:px-3 py-1.5 space-x-1.5 shadow-2xs transition-all cursor-pointer group active:scale-95">
+          <div class="w-5 h-5 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs shrink-0 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-shapes"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-xs font-bold text-slate-800 leading-tight block">More</span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 ml-0.5 transition-transform duration-200" id="more-menu-chevron"></i>
+        </button>
+
+        <!-- MORE MODULES CUSTOM POPUP MENU -->
+        <div id="more-menu-dropdown" style="display: none;" class="absolute left-0 sm:right-0 top-full mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200/90 py-2.5 z-50 text-slate-800">
+          <div class="px-3.5 pb-2 mb-1.5 border-b border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Additional Modules</span>
+            <span class="text-[9px] bg-emerald-50 text-emerald-800 font-extrabold px-2 py-0.5 rounded-md border border-emerald-200">RestroDeck OS</span>
+          </div>
+
+          <div class="space-y-1 px-1.5">
+            <!-- FRANCHISE CENTRAL HQ SHORTCUT (VISIBLE ON FRANCHISE PLAN) -->
+            <button onclick="openFranchiseHQ()" id="more-item-franchise-hq" type="button" style="display: none;" class="w-full px-3 py-2 text-left flex items-center space-x-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-950 cursor-pointer transition-colors group border border-purple-200 mb-1">
+              <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm shrink-0 shadow-sm shadow-purple-600/30">
+                <i class="fa-solid fa-crown text-xs"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-black text-purple-950">Franchise Central HQ</span>
+                  <span class="bg-purple-600 text-white text-[8px] px-1.5 py-0.2 rounded font-black tracking-wide">MULTI-CHAIN</span>
+                </div>
+                <p class="text-[10px] text-purple-700 truncate">Chain analytics, pricing push & outlet manager</p>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-purple-400 group-hover:text-purple-700"></i>
+            </button>
+
+            <!-- SELF-ORDERING KIOSK -->
+            <button onclick="switchTab('kiosk'); closeMoreMenu();" id="tab-kiosk" type="button" class="w-full px-3 py-2 text-left flex items-center space-x-3 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-8 h-8 rounded-xl bg-purple-50 group-hover:bg-purple-100 text-purple-600 flex items-center justify-center text-sm shrink-0 transition-colors">
+                <i class="fa-solid fa-tablet-screen-button"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-bold text-slate-900">Self-Ordering Kiosk</span>
+                  <span class="bg-purple-100 text-purple-800 text-[9px] px-1.5 py-0.2 rounded font-black">TOUCH</span>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Customer tablet touchscreen menu</p>
+              </div>
+            </button>
+
+            <!-- WHATSAPP DIRECT -->
+            <button onclick="switchTab('whatsapp'); closeMoreMenu();" id="tab-whatsapp" type="button" class="w-full px-3 py-2 text-left flex items-center space-x-3 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-8 h-8 rounded-xl bg-emerald-50 group-hover:bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm shrink-0 transition-colors">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-bold text-slate-900">WhatsApp Direct 2.0</span>
+                  <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.2 rounded font-black">3 NEW</span>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">3-message conversational AI ordering</p>
+              </div>
+            </button>
+
+            <!-- PETPOOJA COMPARISON -->
+            <button onclick="switchTab('calculator'); closeMoreMenu();" id="tab-calculator" type="button" class="w-full px-3 py-2 text-left flex items-center space-x-3 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-8 h-8 rounded-xl bg-indigo-50 group-hover:bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shrink-0 transition-colors">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-bold text-slate-900">Petpooja Cost Audit</span>
+                  <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] px-1.5 py-0.2 rounded font-black">SAVE ₹31K</span>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Compare hidden paper & addon fees</p>
+              </div>
+            </button>
+          </div>
+
+          <div class="h-px bg-slate-100 my-1.5 mx-2"></div>
+
+          <div class="px-1.5">
+            <button onclick="openModal('modal-support'); closeMoreMenu();" type="button" class="w-full px-3 py-2 text-left flex items-center space-x-3 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-8 h-8 rounded-xl bg-teal-50 group-hover:bg-teal-100 text-teal-600 flex items-center justify-center text-sm shrink-0 transition-colors">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-bold text-slate-900">Staff Training & Support</span>
+                  <span class="bg-teal-100 text-teal-800 text-[9px] px-1.5 py-0.2 rounded font-black">24x7</span>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Setup videos & VIP WhatsApp desk</p>
+              </div>
+            </button>
+            <a href="/landing" target="_blank" onclick="closeMoreMenu();" class="w-full px-3 py-2 text-left flex items-center space-x-3 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-8 h-8 rounded-xl bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center text-sm shrink-0 transition-colors">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-bold text-slate-900">Marketing & Pricing Site</span>
+                  <span class="bg-blue-100 text-blue-800 text-[9px] px-1.5 py-0.2 rounded font-black">Public</span>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Showcase advantages, plans & onboarding</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT CONTROLS: ROLE, SUPPORT, CALM STATUS & CLOCK -->
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <!-- TERMINAL ROLE SWITCHER (CUSTOM POPUP MENU) -->
+      <div class="relative shrink-0 flex items-center" id="role-switcher-container">
+        <!-- Hidden select for compatibility -->
+        <select id="terminal-role-select" class="hidden" onchange="switchTerminalRole(this.value)">
+          <option value="cashier">Cashier</option>
+          <option value="captain">Waiter / Captain</option>
+          <option value="kds">Kitchen Chef</option>
+          <option value="kiosk">Kiosk Mode</option>
+          <option value="owner">Owner / CFO</option>
+        </select>
+
+        <button onclick="toggleRoleMenu(event)" id="role-menu-btn" type="button" class="flex items-center bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl px-2 sm:px-2.5 py-1.5 space-x-1.5 shadow-2xs transition-all cursor-pointer group active:scale-95">
+          <div id="role-active-icon" class="w-5 h-5 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center text-xs shrink-0 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-cash-register"></i>
+          </div>
+          <div class="text-left">
+            <span id="role-active-label" class="text-xs font-bold text-slate-800 leading-tight block">Cashier</span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 ml-0.5 transition-transform duration-200" id="role-menu-chevron"></i>
+        </button>
+
+        <!-- CUSTOM POPUP MENU DROPDOWN -->
+        <div id="role-menu-dropdown" style="display: none;" class="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200/90 py-2.5 z-50 text-slate-800">
+          <div class="px-3.5 pb-2 mb-1.5 border-b border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Switch Role / Station</span>
+            <span class="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200/70 font-black px-2 py-0.5 rounded-md">Live Multi-User</span>
+          </div>
+
+          <div class="space-y-1 px-1.5">
+            <!-- CASHIER -->
+            <button onclick="switchTerminalRole('cashier'); closeRoleMenu();" data-role="cashier" type="button" class="role-item-btn w-full px-2.5 py-2 text-left flex items-center space-x-2.5 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group bg-slate-100 font-black">
+              <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs shrink-0">
+                <i class="fa-solid fa-cash-register"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-900">Cashier Register</span>
+                  <i class="role-check-icon fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Billing, tables & payments</p>
+              </div>
+            </button>
+
+            <!-- CAPTAIN / WAITER -->
+            <button onclick="switchTerminalRole('captain'); closeRoleMenu();" data-role="captain" type="button" class="role-item-btn w-full px-2.5 py-2 text-left flex items-center space-x-2.5 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs shrink-0">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-900">Waiter / Captain</span>
+                  <i class="role-check-icon fa-solid fa-circle-check text-emerald-600 text-sm hidden"></i>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Handheld tables & KOT punch</p>
+              </div>
+            </button>
+
+            <!-- KITCHEN CHEF -->
+            <button onclick="switchTerminalRole('kds'); closeRoleMenu();" data-role="kds" type="button" class="role-item-btn w-full px-2.5 py-2 text-left flex items-center space-x-2.5 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs shrink-0">
+                <i class="fa-solid fa-fire-burner"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-900">Kitchen Chef</span>
+                  <i class="role-check-icon fa-solid fa-circle-check text-emerald-600 text-sm hidden"></i>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Live KDS tickets & ready chime</p>
+              </div>
+            </button>
+
+            <!-- KIOSK MODE -->
+            <button onclick="switchTerminalRole('kiosk'); closeRoleMenu();" data-role="kiosk" type="button" class="role-item-btn w-full px-2.5 py-2 text-left flex items-center space-x-2.5 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs shrink-0">
+                <i class="fa-solid fa-tablet-screen-button"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-900">Kiosk Touch Mode</span>
+                  <i class="role-check-icon fa-solid fa-circle-check text-emerald-600 text-sm hidden"></i>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">Customer self-order terminal</p>
+              </div>
+            </button>
+
+            <!-- OWNER / CFO -->
+            <button onclick="switchTerminalRole('owner'); closeRoleMenu();" data-role="owner" type="button" class="role-item-btn w-full px-2.5 py-2 text-left flex items-center space-x-2.5 rounded-xl hover:bg-slate-50 text-slate-800 cursor-pointer transition-colors group">
+              <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs shrink-0">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-900">Owner / CFO</span>
+                  <i class="role-check-icon fa-solid fa-circle-check text-emerald-600 text-sm hidden"></i>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">90+ Reports & P&L intelligence</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 24x7 SUPPORT BUTTON -->
+      <button onclick="openModal('modal-support')" title="Online Training & 24x7 WhatsApp Helpdesk" class="bg-white hover:bg-slate-50 text-slate-700 hover:text-emerald-700 border border-slate-200/90 text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl flex items-center space-x-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer">
+        <i class="fa-solid fa-headset text-emerald-600 text-xs"></i>
+        <span class="hidden xl:inline">Support</span>
+      </button>
+
+      <!-- CLOUD SYNC & DIGITAL CLOCK -->
+      <div class="flex items-center space-x-1.5 bg-slate-900 text-white border border-slate-800 px-2.5 py-1.5 rounded-xl text-xs select-none shadow-xs shrink-0">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+        <span class="font-bold text-emerald-300 hidden 2xl:inline text-[11px]">Synced</span>
+        <span class="text-slate-600 hidden 2xl:inline">|</span>
+        <span id="live-clock" class="font-mono font-bold text-white text-xs">20:05</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MAIN WORKSPACE (FULL HEIGHT, MIN-H-0, NO CUTOFF)         -->
+  <!-- ======================================================== -->
+  <main class="flex-1 min-h-0 overflow-hidden relative">
+
+    <!-- ======================================================== -->
+    <!-- VIEW 1: POS REGISTER & TABLE BILLING                     -->
+    <!-- ======================================================== -->
+    <div id="view-pos" class="view-panel h-full min-h-0 flex flex-row relative overflow-hidden">
+      
+      <!-- LEFT AREA: TABLES FLOOR & MENU (SCROLLS INDEPENDENTLY) -->
+      <div class="flex-1 min-h-0 flex flex-col h-full overflow-hidden bg-slate-50/70">
+        
+        <!-- SECTION 1: FLOOR TABLES SELECTOR (HIGH-END BENTO DESIGN) -->
+        <div class="bg-white px-5 py-3.5 border-b border-slate-200/90 shrink-0 shadow-2xs">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+            
+            <!-- SECTION TABS -->
+            <div class="flex items-center space-x-1.5 overflow-x-auto scrollbar-none py-0.5">
+              <span class="text-xs font-black text-slate-900 uppercase tracking-wider mr-2 flex items-center shrink-0">
+                <i class="fa-solid fa-layer-group text-slate-900 mr-1.5 text-xs"></i>Floor Plan
+              </span>
+              <div class="flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200/90 text-xs font-bold shrink-0">
+                <button type="button" onclick="setFloorSectionFilter('ALL')" id="floor-filter-all" class="floor-filter-btn active px-3 py-1 rounded-lg transition-all cursor-pointer">
+                  All (<span id="count-floor-all">8</span>)
+                </button>
+                <button type="button" onclick="setFloorSectionFilter('AC')" id="floor-filter-ac" class="floor-filter-btn px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
+                  AC Dine-in (<span id="count-floor-ac">4</span>)
+                </button>
+                <button type="button" onclick="setFloorSectionFilter('OUTDOOR')" id="floor-filter-outdoor" class="floor-filter-btn px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
+                  Outdoor (<span id="count-floor-outdoor">2</span>)
+                </button>
+                <button type="button" onclick="setFloorSectionFilter('DELIVERY')" id="floor-filter-delivery" class="floor-filter-btn px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
+                  Takeaway & WA (<span id="count-floor-delivery">2</span>)
+                </button>
+              </div>
+            </div>
+
+            <!-- STATUS LEGEND COUNTERS & ADD TABLE -->
+            <div class="flex items-center gap-3 text-xs shrink-0">
+              <div class="hidden lg:flex items-center space-x-2 text-[11px] font-bold text-slate-500 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/70">
+                <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span><span id="legend-vacant-count">4</span> Vacant</span>
+                <span class="text-slate-300">•</span>
+                <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5 animate-pulse"></span><span id="legend-running-count">2</span> Seated</span>
+                <span class="text-slate-300">•</span>
+                <span class="flex items-center"><i class="fa-solid fa-bell text-[9px] text-emerald-600 mr-1.5"></i><span id="legend-ready-count">1</span> Food Ready</span>
+                <span class="text-slate-300">•</span>
+                <span class="flex items-center"><i class="fa-solid fa-receipt text-[9px] text-blue-600 mr-1.5"></i><span id="legend-billed-count">1</span> Billed</span>
+              </div>
+
+              <button onclick="openAddTableModal()" class="text-xs font-bold text-slate-900 hover:text-white bg-white hover:bg-slate-900 border border-slate-300 hover:border-slate-900 px-3.5 py-1.5 rounded-xl flex items-center space-x-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span>Add Table</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TABLE TILES HORIZONTAL SCROLLER -->
+          <div id="tables-container" class="flex space-x-3.5 overflow-x-auto pb-2 pt-0.5 scrollbar-thin">
+            <!-- Rendered dynamically by JS -->
+          </div>
+        </div>
+
+        <!-- SECTION 2: MENU FILTER & SEARCH (WITH + ADD DISH) -->
+        <div class="bg-white px-5 py-3 border-b border-slate-200/90 flex flex-wrap items-center justify-between gap-3 shrink-0">
+          <div class="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5" id="category-pills">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <button onclick="openAddMenuModal()" class="text-xs font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-300 px-3.5 py-1.5 rounded-xl flex items-center space-x-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-plus text-emerald-600 text-[10px]"></i>
+              <span>Add Dish</span>
+            </button>
+
+            <!-- SEARCH INPUT -->
+            <div class="relative w-48 sm:w-60">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+              <input type="text" id="menu-search" oninput="handleMenuSearch(this.value)" placeholder="Search menu..." class="w-full bg-slate-100 text-xs pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:bg-white transition-all text-slate-800 font-medium placeholder-slate-400">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: MENU ITEMS GRID (MIN-H-0 TO PREVENT CUTOFF) -->
+        <div class="flex-1 min-h-0 overflow-y-auto p-5" id="menu-grid-container">
+          <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-8">
+            <!-- Rendered dynamically by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- RIGHT SIDEBAR: ORDER CART & BILLING (COLLAPSIBLE DRAWER) -->
+      <!-- ======================================================== -->
+      <aside id="cart-drawer" class="w-[380px] lg:w-[410px] xl:w-[420px] bg-white flex flex-col h-full max-h-full shadow-2xl border-l border-slate-200/90 shrink-0 transition-all duration-300 ease-in-out relative z-20 overflow-hidden">
+        
+        <!-- CLEAN 2-ROW CART HEADER (ZERO OVERLAPS, INTUITIVE FOR CASHIERS) -->
+        <div class="bg-white p-3.5 border-b border-slate-200/90 space-y-2.5 shrink-0 shadow-2xs select-none">
+          <!-- ROW 1: TABLE BADGE + SECTION TYPE (LEFT) & CLEAR CART + COLLAPSE (RIGHT) -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2 min-w-0">
+              <div id="cart-table-badge" class="bg-emerald-600 text-white font-black text-xs px-2.5 py-1.5 rounded-xl shadow-xs shrink-0">Table 2</div>
+              <span id="cart-order-type" class="text-xs text-slate-900 font-extrabold truncate">AC Dine-in</span>
+            </div>
+            
+            <div class="flex items-center space-x-2 shrink-0">
+              <button onclick="openDeleteCartModal()" id="btn-delete-cart" title="Clear or Delete Cart" class="text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 shadow-2xs active:scale-95">
+                <i class="fa-solid fa-trash-can text-[11px]"></i>
+                <span>Clear Cart</span>
+              </button>
+              <button onclick="toggleCartDrawer()" title="Close Cart Drawer" class="text-slate-400 hover:text-slate-700 text-xs p-1.5 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer" id="drawer-toggle-btn">
+                <i class="fa-solid fa-angles-right text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ROW 2: ORDER STATUS & META (LEFT) & TABLE STATUS SELECTOR (RIGHT) -->
+          <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
+            <p class="text-[11px] text-slate-500 font-medium truncate flex-1 min-w-0" id="cart-meta-info">Cooking in Kitchen • Order #ORD-101 (18:15)</p>
+            <select id="cart-table-status-select" onchange="manuallyAssignTableStatus(this.value)" class="text-[11px] font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200/90 rounded-lg px-2 py-1 focus:outline-none cursor-pointer shrink-0">
+              <option value="vacant">🟢 Vacant</option>
+              <option value="occupied">🍳 Running</option>
+              <option value="billed">🔵 Billed</option>
+              <option value="reserved">🟣 Reserved</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CART ITEMS LIST (SCROLLABLE, MIN-H-0 TO NEVER OVERFLOW) -->
+        <div class="flex-1 min-h-0 overflow-y-auto p-4 space-y-3" id="cart-items-container">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
+        <!-- CART TOTALS & GST BREAKDOWN -->
+        <div class="bg-slate-50 p-3.5 border-t border-slate-200/90 shrink-0 text-xs space-y-2">
+          <div class="flex justify-between text-slate-600">
+            <span>Item Subtotal</span>
+            <span class="font-bold text-slate-900 font-mono" id="cart-subtotal">₹ 0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span class="flex items-center">
+              GST (5% CGST+SGST)
+              <span class="ml-1 text-[10px] bg-slate-200 text-slate-700 px-1 rounded font-bold">Tax</span>
+            </span>
+            <span class="font-bold text-slate-900 font-mono" id="cart-tax">₹ 0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-600" id="packaging-row" style="display: none;">
+            <span>Container / Packaging</span>
+            <span class="font-bold text-slate-900 font-mono" id="cart-packaging">₹ 30.00</span>
+          </div>
+          <div class="pt-2 border-t border-slate-200 flex justify-between items-baseline">
+            <span class="font-extrabold text-sm text-slate-900">Total Bill Amount</span>
+            <span class="font-black text-xl text-emerald-600 font-mono tracking-tight" id="cart-total">₹ 0.00</span>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS: KOT, PRINT, PAY (ALWAYS FULLY VISIBLE) -->
+        <div class="p-3.5 bg-white border-t border-slate-200/90 shrink-0 space-y-2.5">
+          <div class="grid grid-cols-3 gap-2">
+            <button id="cart-kot-btn" onclick="sendKOTToKitchen()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] py-2 px-1.5 rounded-xl flex items-center justify-center space-x-1 shadow-sm transition-all active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-bell-concierge text-xs"></i>
+              <span>Send KOT</span>
+            </button>
+            <button onclick="openThermalPrintModal()" title="Print Customer Tax Bill (80mm/58mm)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-[11px] py-2 px-1.5 rounded-xl flex items-center justify-center space-x-1 transition-all active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-receipt text-xs"></i>
+              <span>Bill Slip</span>
+            </button>
+            <button onclick="openThermalKOTModal()" title="Print Kitchen Order Ticket (80mm/58mm)" class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] py-2 px-1.5 rounded-xl flex items-center justify-center space-x-1 transition-all active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-kitchen-set text-xs text-amber-600"></i>
+              <span>KOT Slip</span>
+            </button>
+          </div>
+
+          <!-- PRIMARY SETTLE & WHATSAPP BILL BUTTON -->
+          <button id="cart-settle-btn" onclick="openSettlePaymentModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm py-2.5 px-4 rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/25 transition-all active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-receipt text-emerald-200"></i>
+            <span>Settle & WhatsApp Bill</span>
+            <i class="fa-solid fa-arrow-right text-xs opacity-75"></i>
+          </button>
+        </div>
+
+      </aside>
+
+      <!-- FLOATING EXPAND PILL (SHOWN WHEN CART DRAWER IS MINIMIZED) -->
+      <button id="floating-cart-pill" onclick="toggleCartDrawer()" class="hidden fixed bottom-6 right-6 z-30 bg-slate-900 text-white px-5 py-3 rounded-full shadow-2xl flex items-center space-x-3 hover:bg-slate-800 transition-transform active:scale-95 border border-emerald-400/80">
+        <div class="relative">
+          <i class="fa-solid fa-cart-shopping text-emerald-400 text-base"></i>
+          <span id="floating-cart-badge" class="absolute -top-2 -right-2.5 bg-emerald-500 text-slate-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">3</span>
+        </div>
+        <div class="text-left">
+          <div class="text-[10px] text-slate-300 uppercase font-bold" id="floating-cart-table">Table 2</div>
+          <div class="text-xs font-black text-white font-mono" id="floating-cart-total">₹ 819.00</div>
+        </div>
+        <i class="fa-solid fa-angles-left text-xs text-emerald-400 ml-1"></i>
+      </button>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 2: KITCHEN DISPLAY SYSTEM (BRIGHT, CRISP LIGHT KDS) -->
+    <!-- ======================================================== -->
+    <div id="view-kds" class="view-panel h-full min-h-0 hidden flex flex-col bg-slate-100 p-5 overflow-hidden">
+      <div class="flex items-center justify-between mb-4 shrink-0 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div>
+          <h2 class="text-xl font-black text-slate-900 flex items-center">
+            <i class="fa-solid fa-kitchen-set text-amber-500 mr-2.5"></i>Live Kitchen Display System (KDS)
+          </h2>
+          <p class="text-xs text-slate-500 font-medium">Real-time KOT tickets • One-Click Lifecycle (Cooking → Ready → Served) • Zero Paper Confusion</p>
+        </div>
+        <div class="flex items-center space-x-3 text-xs">
+          <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl font-bold flex items-center">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-ping"></span>Live Kitchen Stream
+          </span>
+          <button onclick="playChimeSound()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 px-3.5 py-1.5 rounded-xl border border-amber-300 text-xs font-bold flex items-center transition-colors">
+            <i class="fa-solid fa-volume-high mr-1.5"></i>Test Bell Chime
+          </button>
+        </div>
+      </div>
+
+      <!-- KDS TICKETS GRID (LIGHT THEME, SCROLLS WITHOUT CUTOFF) -->
+      <div class="flex-1 min-h-0 overflow-y-auto">
+        <div id="kds-tickets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-6">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 3: WHATSAPP AI SUPERPOWER (3-MESSAGE FLOW)          -->
+    <!-- ======================================================== -->
+    <div id="view-whatsapp" class="view-panel h-full min-h-0 hidden flex flex-col md:flex-row bg-slate-50 overflow-hidden">
+      
+      <!-- LEFT: EXPLANATION & INTERACTIVE SIMULATOR -->
+      <div class="flex-1 min-h-0 p-6 lg:p-8 overflow-y-auto border-r border-slate-200 flex flex-col justify-between">
+        <div>
+          <div class="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs px-3 py-1 rounded-full font-black mb-3">
+            <i class="fa-brands fa-whatsapp text-sm text-whatsapp"></i>
+            <span>3-Message Conversational Ordering Flow</span>
+          </div>
+          <h2 class="text-2xl lg:text-3xl font-black tracking-tight text-slate-900 mb-2">
+            Turn WhatsApp into Your Automated Cashier & Marketing Channel
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed max-w-2xl mb-6">
+            When a customer messages on WhatsApp, our AI responds with a **3-Message Intelligent Sequence**:
+            1. **Itemized Order Confirmation & Bill**
+            2. **Direct UPI / Payment Link**
+            3. **Live Kitchen KDS & Rider Tracking Link**
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6 max-w-2xl">
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+              <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-black text-xs flex items-center justify-center mb-2">1</span>
+              <h4 class="font-extrabold text-xs text-slate-900 mb-0.5">Instant Bill</h4>
+              <p class="text-[11px] text-slate-500 leading-tight">Parses natural text/audio and replies with itemized pricing & 5% GST.</p>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+              <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-black text-xs flex items-center justify-center mb-2">2</span>
+              <h4 class="font-extrabold text-xs text-slate-900 mb-0.5">UPI Payment</h4>
+              <p class="text-[11px] text-slate-500 leading-tight">Sends dynamic UPI link (GPay/PhonePe). Auto-confirms payment.</p>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+              <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-black text-xs flex items-center justify-center mb-2">3</span>
+              <h4 class="font-extrabold text-xs text-slate-900 mb-0.5">Kitchen KDS</h4>
+              <p class="text-[11px] text-slate-500 leading-tight">Punches order straight to kitchen terminal & sends live tracking link.</p>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE LIVE DEMO TRIGGER (LIGHT THEME) -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm max-w-2xl">
+            <label class="block text-xs font-black text-slate-800 uppercase tracking-wider mb-2">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500 mr-1.5"></i>Simulate Customer Message (Watch 3 Messages Stream In Phone):
+            </label>
+            <div class="flex space-x-2 mb-3">
+              <input type="text" id="simulated-wa-input" value="Bhaiya 1 Dum Chicken Biryani and 2 Butter Naan pack kar do" class="flex-1 bg-slate-50 border border-slate-300 text-xs px-3.5 py-2.5 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium">
+              <button onclick="triggerSimulatedWhatsAppOrder()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 flex items-center transition-transform active:scale-95">
+                <i class="fa-solid fa-paper-plane mr-1.5"></i>Send Order
+              </button>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="text-[11px] text-slate-500 self-center font-semibold">Test Presets:</span>
+              <button onclick="setSimPreset('2 Butter Chicken, 4 Butter Naan, and 1 Dal Makhani')" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded-lg border border-slate-200">
+                "2 Butter Chicken, 4 Butter Naan"
+              </button>
+              <button onclick="setSimPreset('1 Paneer Butter Masala and 2 Garlic Cheese Naan less spicy')" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded-lg border border-slate-200">
+                "1 Paneer Butter Masala less spicy"
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+          <span>Petpooja Addon Fee: <strong class="text-rose-600 font-bold">₹ 5,000/yr</strong></span>
+          <span>RestroDeck Cloud POS: <strong class="text-emerald-600 font-bold">Included FREE</strong></span>
+        </div>
+      </div>
+
+      <!-- RIGHT: LIVE PHONE PREVIEW (ELEGANT MOCKUP) -->
+      <div class="w-full md:w-[420px] bg-slate-100 p-6 flex items-center justify-center shrink-0 border-l border-slate-200">
+        <!-- IPHONE MOCKUP -->
+        <div class="w-[310px] h-[570px] bg-slate-900 rounded-[44px] p-2.5 shadow-2xl border-4 border-slate-700 flex flex-col relative overflow-hidden">
+          <!-- PHONE SPEAKER NOTCH -->
+          <div class="w-24 h-4 bg-slate-950 rounded-b-xl absolute top-2.5 left-1/2 -translate-x-1/2 z-20"></div>
+
+          <!-- WHATSAPP HEADER -->
+          <div class="bg-[#075E54] text-white pt-6 pb-2.5 px-3 flex items-center space-x-2 z-10 shrink-0">
+            <i class="fa-solid fa-arrow-left text-xs opacity-75"></i>
+            <div class="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center font-bold text-xs text-white">
+              SS
+            </div>
+            <div class="flex-1">
+              <h4 class="text-xs font-bold leading-tight flex items-center">
+                Spice Symphony Bistro
+                <i class="fa-solid fa-circle-check text-[10px] text-emerald-300 ml-1"></i>
+              </h4>
+              <p class="text-[9px] text-emerald-100">Verified Business Account</p>
+            </div>
+            <i class="fa-solid fa-ellipsis-vertical text-xs opacity-75"></i>
+          </div>
+
+          <!-- WHATSAPP CHAT AREA (SCROLLS SMOOTHLY) -->
+          <div class="flex-1 min-h-0 bg-[#EFEAE2] p-2.5 overflow-y-auto text-slate-800 space-y-2.5 flex flex-col" id="phone-chat-stream">
+            <!-- Simulated messages rendered here -->
+          </div>
+
+          <!-- WHATSAPP INPUT BAR -->
+          <div class="bg-[#F0F0F0] p-2 flex items-center space-x-1.5 shrink-0 border-t border-slate-300">
+            <i class="fa-regular fa-face-smile text-slate-500 text-sm"></i>
+            <div class="flex-1 bg-white rounded-full px-3 py-1 text-[11px] text-slate-400 font-medium">Message...</div>
+            <div class="w-7 h-7 rounded-full bg-[#075E54] text-white flex items-center justify-center text-xs">
+              <i class="fa-solid fa-microphone"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 4: PETPOOJA VS WHATSLEAD (LIGHT AUDIT DASHBOARD)    -->
+    <!-- ======================================================== -->
+    <div id="view-calculator" class="view-panel h-full min-h-0 hidden p-6 lg:p-8 bg-slate-100 overflow-y-auto">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+          <span class="bg-rose-100 text-rose-800 border border-rose-300 text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
+            Restaurant Owner Cost Audit
+          </span>
+          <h2 class="text-3xl font-black mt-2 text-slate-900">How Much Are You Overpaying Petpooja Every Year?</h2>
+          <p class="text-sm text-slate-500 mt-1">See the hidden add-on costs that silently drain your monthly restaurant profits.</p>
+        </div>
+
+        <!-- COMPARISON CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          
+          <!-- PETPOOJA CARD (RED WARNING THEME) -->
+          <div class="bg-white rounded-2xl p-6 border border-rose-300 shadow-sm relative">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-black text-xl text-rose-700">Petpooja POS</h3>
+              <span class="text-xs bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full font-bold">Incumbent</span>
+            </div>
+
+            <div class="space-y-3 text-xs divide-y divide-slate-100">
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Base POS Software License</span>
+                <span class="font-bold text-slate-900 font-mono">₹ 14,000 / yr</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Online Ordering Integration (Swiggy/Zomato)</span>
+                <span class="font-bold text-slate-900 font-mono">₹ 4,000 / yr</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Kitchen Display System (KDS) Module</span>
+                <span class="font-bold text-slate-900 font-mono">₹ 3,000 / yr</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Thermal Paper Rolls (₹1,500/month avg)</span>
+                <span class="font-bold text-slate-900 font-mono">₹ 18,000 / yr</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Customer Support Experience</span>
+                <span class="font-bold text-rose-600">IVR Call Center (Slow)</span>
+              </div>
+              <div class="flex justify-between pt-3 text-sm border-t border-rose-200">
+                <span class="font-black text-slate-900">Total Annual Outflow:</span>
+                <span class="font-black text-rose-600 text-xl font-mono">₹ 39,000 / yr</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- WHATSLEAD CARD (EMERALD VALUE THEME) -->
+          <div class="bg-gradient-to-b from-white to-emerald-50/50 rounded-2xl p-6 border border-emerald-400 shadow-md relative">
+            <div class="absolute -top-3 right-6 bg-emerald-600 text-white text-[11px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider shadow">
+              All-In-One Value
+            </div>
+            
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-black text-xl text-emerald-800">RestroDeck Cloud POS</h3>
+              <span class="text-xs bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold">Modern Solution</span>
+            </div>
+
+            <div class="space-y-3 text-xs divide-y divide-slate-100">
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Complete Modern POS License</span>
+                <span class="font-bold text-emerald-700 font-mono">₹ 7,999 / yr</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Online & WhatsApp Ordering Engine</span>
+                <span class="font-bold text-emerald-700 font-mono">₹ 0 (Included)</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Kitchen Display System (KDS) Screen</span>
+                <span class="font-bold text-emerald-700 font-mono">₹ 0 (Included)</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">WhatsApp Digital Receipts (Zero Paper Waste)</span>
+                <span class="font-bold text-emerald-700 font-mono">Saves ₹ 18,000</span>
+              </div>
+              <div class="flex justify-between pt-2">
+                <span class="text-slate-600 font-medium">Customer Support Experience</span>
+                <span class="font-bold text-emerald-700">Dedicated WhatsApp Group (5m response)</span>
+              </div>
+              <div class="flex justify-between pt-3 text-sm border-t-2 border-emerald-300">
+                <span class="font-black text-slate-900">Total Annual Outflow:</span>
+                <span class="font-black text-emerald-700 text-xl font-mono">₹ 7,999 / yr</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BIG SAVINGS BANNER -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 text-white flex flex-col md:flex-row items-center justify-between shadow-xl">
+          <div>
+            <h4 class="text-2xl font-black">Net Cash Saved Every Year: ₹ 31,000+</h4>
+            <p class="text-sm font-semibold opacity-90 mt-1">That is ₹ 2,580 added back into your restaurant's bank account every single month.</p>
+          </div>
+          <button onclick="switchTab('pos')" class="mt-4 md:mt-0 bg-white hover:bg-slate-100 text-slate-900 font-black text-sm px-6 py-3 rounded-xl shadow-md transition-transform active:scale-95">
+            Switch to RestroDeck POS
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: INVENTORY & SMART-STOCK MANAGER                    -->
+    <!-- ======================================================== -->
+    <div id="view-inventory" class="view-panel h-full min-h-0 hidden p-6 lg:p-8 bg-slate-50 overflow-y-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <!-- HEADER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="bg-teal-100 text-teal-800 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">Smart-Stock Engine</span>
+              <span class="text-xs text-slate-400 font-bold">• Recipe Auto-Deduction</span>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Inventory & Purchase Manager</h2>
+            <p class="text-xs text-slate-500 font-medium">B2B procurement with Hyperpure (Zomato), Swiggy Assure & Local APMC Mandi</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="openModal('modal-create-po')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center space-x-1.5 shadow-md shadow-teal-600/20 transition-all active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-cart-plus text-xs"></i>
+              <span>+ Create PO</span>
+            </button>
+            <button onclick="dispatchVendorPOWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center space-x-1.5 shadow-md shadow-emerald-600/20 transition-all active:scale-95 cursor-pointer">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Dispatch PO to Vendor</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI SUMMARY CARDS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-xs text-slate-500 font-semibold">Raw Ingredients Tracked</span>
+            <div class="text-2xl font-black text-slate-900 font-mono mt-1" id="inv-total-count">7 Items</div>
+            <span class="text-[11px] text-emerald-600 font-bold">100% Recipe Mapped</span>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-xs text-slate-500 font-semibold">Low Stock Warnings</span>
+            <div class="text-2xl font-black text-amber-600 font-mono mt-1" id="inv-low-count">2 Items</div>
+            <span class="text-[11px] text-amber-700 font-bold">Butter & Handi Boxes</span>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-xs text-slate-500 font-semibold">Auto-Deducted Today</span>
+            <div class="text-2xl font-black text-blue-600 font-mono mt-1" id="inv-deducted-cost">₹ 4,320</div>
+            <span class="text-[11px] text-slate-500 font-medium">Synced from 42 orders</span>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-xs text-slate-500 font-semibold">Stock Valuation</span>
+            <div class="text-2xl font-black text-slate-900 font-mono mt-1">₹ 38,940</div>
+            <span class="text-[11px] text-teal-600 font-bold">Closing valuation</span>
+          </div>
+        </div>
+
+        <!-- PROCUREMENT INTEGRATIONS CARDS (HYPERPURE, SWIGGY ASSURE, DIY) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 p-4 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-black text-rose-900 text-xs flex items-center">
+                  <i class="fa-solid fa-truck-fast text-rose-600 mr-1.5"></i>Hyperpure by Zomato
+                </span>
+                <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-1.5 py-0.5 rounded">CONNECTED</span>
+              </div>
+              <p class="text-[11px] text-rose-800/80 mb-2">Automated procurement for Dairy, Poultry & Fresh Veggies. Night cutoff: 09:00 PM.</p>
+              <div class="text-xs font-bold text-rose-950 font-mono">Last Order: PO-881 (₹ 6,550) • Dispatched</div>
+            </div>
+            <button onclick="triggerQuickReorder('Hyperpure by Zomato', '10kg Malai Paneer, 15kg Chicken', 6550)" class="mt-3 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition-all cursor-pointer shadow-xs">
+              ⚡ 1-Click Reorder Dairy & Meat
+            </button>
+          </div>
+
+          <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-4 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-black text-amber-900 text-xs flex items-center">
+                  <i class="fa-solid fa-box text-amber-600 mr-1.5"></i>Swiggy Assure B2B
+                </span>
+                <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-1.5 py-0.5 rounded">CONNECTED</span>
+              </div>
+              <p class="text-[11px] text-amber-800/80 mb-2">Wholesale procurement for Staples, Rice, Cooking Oil & Spices with GST tax credit.</p>
+              <div class="text-xs font-bold text-amber-950 font-mono">Last Order: PO-882 (₹ 6,175) • Delivered</div>
+            </div>
+            <button onclick="triggerQuickReorder('Swiggy Assure', '2x 15L Cooking Oil, 25kg Basmati', 6175)" class="mt-3 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition-all cursor-pointer shadow-xs">
+              ⚡ 1-Click Reorder Oil & Rice
+            </button>
+          </div>
+
+          <div class="bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-300 p-4 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-black text-slate-900 text-xs flex items-center">
+                  <i class="fa-solid fa-store text-blue-600 mr-1.5"></i>DeliverIT & Mandi (DIY)
+                </span>
+                <span class="bg-blue-100 text-blue-800 text-[9px] font-black px-1.5 py-0.5 rounded">LOCAL VENDORS</span>
+              </div>
+              <p class="text-[11px] text-slate-700 mb-2">Direct local vendor ordering for eco-friendly packaging, handi boxes, and fresh mint.</p>
+              <div class="text-xs font-bold text-slate-900 font-mono">Last Order: PO-883 (₹ 3,800) • Pending</div>
+            </div>
+            <button onclick="triggerQuickReorder('DeliverIT (DIY)', '200x Handi Boxes, 500x Paper Bags', 3800)" class="mt-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition-all cursor-pointer shadow-xs">
+              ⚡ 1-Click Reorder Packaging
+            </button>
+          </div>
+        </div>
+
+        <!-- RAW MATERIALS TABLE -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-slate-200 flex flex-wrap justify-between items-center bg-slate-50/70 gap-2">
+            <div>
+              <h3 class="font-bold text-sm text-slate-900">Raw Ingredients & Live Smart Stock</h3>
+              <p class="text-[11px] text-slate-500">Auto-deducted on kitchen KOT creation. 1-tap 86 out-of-stock toggle.</p>
+            </div>
+            <span class="text-xs text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+              <i class="fa-solid fa-circle-check text-[10px] mr-1"></i>Real-time Consumption Synced
+            </span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-500 uppercase font-black border-b border-slate-200">
+                <tr>
+                  <th class="py-3 px-4">Ingredient Name</th>
+                  <th class="py-3 px-4">Supplier Partner</th>
+                  <th class="py-3 px-4">Current Stock</th>
+                  <th class="py-3 px-4">Consumed Today</th>
+                  <th class="py-3 px-4">Unit Cost</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-center">86 / Out of Stock</th>
+                  <th class="py-3 px-4 text-right">Quick Restock</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="inventory-table-body">
+                <!-- Rendered dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- RECENT PURCHASE ORDERS TABLE -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-slate-200 flex justify-between items-center bg-slate-50/70">
+            <h3 class="font-bold text-sm text-slate-900">Purchase Orders (PO) Log</h3>
+            <span class="text-xs text-slate-500 font-semibold">Hyperpure, Swiggy Assure & Mandi</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-500 uppercase font-black border-b border-slate-200">
+                <tr>
+                  <th class="py-3 px-4">PO Number</th>
+                  <th class="py-3 px-4">Supplier</th>
+                  <th class="py-3 px-4">Items Summary</th>
+                  <th class="py-3 px-4">Total Amount</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">ETA / Delivered</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="po-table-body">
+                <!-- Rendered dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: FOOD AGGREGATORS INTEGRATIONS (SWIGGY / ZOMATO / ONDC) -->
+    <!-- ======================================================== -->
+    <div id="view-aggregators" class="view-panel h-full min-h-0 hidden p-6 lg:p-8 bg-slate-50 overflow-y-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <!-- HEADER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="bg-rose-100 text-rose-800 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">Omnichannel Sync</span>
+              <span class="text-xs text-slate-400 font-bold">• 2-Way Live Bridge</span>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Food Aggregators Integration Hub</h2>
+            <p class="text-xs text-slate-500 font-medium">Manage Swiggy, Zomato, ONDC & WhatsApp Direct orders from a single unified screen</p>
+          </div>
+          <button onclick="syncAllAggregatorsMenu()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center space-x-2 shadow-md transition-all active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-arrows-rotate text-emerald-400"></i>
+            <span>1-Click Sync Menu & Prices</span>
+          </button>
+        </div>
+
+        <!-- PLATFORM LIVE STATUS CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- SWIGGY -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black text-sm">S</div>
+                <div>
+                  <h4 class="font-extrabold text-sm text-slate-900">Swiggy</h4>
+                  <span class="text-[10px] text-slate-400 font-bold">25% Commission</span>
+                </div>
+              </div>
+              <button onclick="toggleAggregatorStatus('swiggy')" id="toggle-swiggy-btn" class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full text-[10px] font-black cursor-pointer">
+                🟢 ONLINE
+              </button>
+            </div>
+            <div class="space-y-1 text-xs">
+              <div class="flex justify-between text-slate-600"><span>Orders Today:</span><b class="text-slate-900 font-mono" id="agg-swiggy-orders">12</b></div>
+              <div class="flex justify-between text-slate-600"><span>Gross Revenue:</span><b class="text-slate-900 font-mono" id="agg-swiggy-rev">₹ 4,820</b></div>
+              <div class="flex justify-between text-rose-600"><span>Commission Cut:</span><b class="font-mono" id="agg-swiggy-comm">-₹ 1,205</b></div>
+            </div>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Auto-Accept:</span>
+              <span class="font-bold text-emerald-600">Enabled</span>
+            </div>
+          </div>
+
+          <!-- ZOMATO -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center font-black text-sm">Z</div>
+                <div>
+                  <h4 class="font-extrabold text-sm text-slate-900">Zomato</h4>
+                  <span class="text-[10px] text-slate-400 font-bold">25% Commission</span>
+                </div>
+              </div>
+              <button onclick="toggleAggregatorStatus('zomato')" id="toggle-zomato-btn" class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full text-[10px] font-black cursor-pointer">
+                🟢 ONLINE
+              </button>
+            </div>
+            <div class="space-y-1 text-xs">
+              <div class="flex justify-between text-slate-600"><span>Orders Today:</span><b class="text-slate-900 font-mono" id="agg-zomato-orders">16</b></div>
+              <div class="flex justify-between text-slate-600"><span>Gross Revenue:</span><b class="text-slate-900 font-mono" id="agg-zomato-rev">₹ 6,340</b></div>
+              <div class="flex justify-between text-rose-600"><span>Commission Cut:</span><b class="font-mono" id="agg-zomato-comm">-₹ 1,585</b></div>
+            </div>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Auto-Accept:</span>
+              <span class="font-bold text-emerald-600">Enabled</span>
+            </div>
+          </div>
+
+          <!-- ONDC DIRECT -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm">O</div>
+                <div>
+                  <h4 class="font-extrabold text-sm text-slate-900">ONDC Network</h4>
+                  <span class="text-[10px] text-slate-400 font-bold">5% Govt Open Network</span>
+                </div>
+              </div>
+              <button onclick="toggleAggregatorStatus('ondc')" id="toggle-ondc-btn" class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full text-[10px] font-black cursor-pointer">
+                🟢 ONLINE
+              </button>
+            </div>
+            <div class="space-y-1 text-xs">
+              <div class="flex justify-between text-slate-600"><span>Orders Today:</span><b class="text-slate-900 font-mono">4</b></div>
+              <div class="flex justify-between text-slate-600"><span>Gross Revenue:</span><b class="text-slate-900 font-mono">₹ 1,420</b></div>
+              <div class="flex justify-between text-blue-600"><span>Commission Cut:</span><b class="font-mono">-₹ 71</b></div>
+            </div>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Auto-Accept:</span>
+              <span class="font-bold text-emerald-600">Enabled</span>
+            </div>
+          </div>
+
+          <!-- WHATSLEAD WHATSAPP DIRECT (0% COMMISSION) -->
+          <div class="bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-5 rounded-2xl shadow-md flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-xl bg-white text-emerald-700 flex items-center justify-center font-black text-base">
+                  <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">WhatsApp Direct</h4>
+                  <span class="text-[10px] text-emerald-200 font-bold">0% Commission • Free</span>
+                </div>
+              </div>
+              <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-black">
+                ✨ 0% CUT
+              </span>
+            </div>
+            <div class="space-y-1 text-xs">
+              <div class="flex justify-between text-emerald-100"><span>Orders Today:</span><b class="text-white font-mono">14</b></div>
+              <div class="flex justify-between text-emerald-100"><span>Gross Revenue:</span><b class="text-white font-mono">₹ 7,890</b></div>
+              <div class="flex justify-between text-amber-200 font-bold"><span>Commission Saved:</span><b class="font-mono text-white">+₹ 1,972.50</b></div>
+            </div>
+            <div class="pt-2 border-t border-white/20 flex items-center justify-between text-[11px]">
+              <span class="text-emerald-100">Direct Settlement:</span>
+              <span class="font-black text-amber-300">100% in Bank</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULATE INCOMING AGGREGATOR ORDER BUTTON -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div>
+            <h4 class="font-black text-sm text-slate-900 flex items-center">
+              <i class="fa-solid fa-bolt text-amber-500 mr-2"></i>Test Live Aggregator Bridge
+            </h4>
+            <p class="text-xs text-slate-500 mt-0.5">Inject an incoming live Swiggy / Zomato order to see automatic KOT ticket generation and kitchen chime.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="simulateAggregatorOrder('Swiggy')" class="bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-300 text-xs font-bold px-3 py-2 rounded-xl transition-all active:scale-95 cursor-pointer">
+              + Simulate Swiggy Order
+            </button>
+            <button onclick="simulateAggregatorOrder('Zomato')" class="bg-red-50 hover:bg-red-100 text-red-800 border border-red-300 text-xs font-bold px-3 py-2 rounded-xl transition-all active:scale-95 cursor-pointer">
+              + Simulate Zomato Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: 90+ DYNAMIC REPORTS & AUDIT ENGINE                 -->
+    <!-- ======================================================== -->
+    <div id="view-reports" class="view-panel h-full min-h-0 hidden p-6 lg:p-8 bg-slate-50 overflow-y-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <!-- HEADER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="bg-blue-100 text-blue-800 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">90+ Reports Module</span>
+              <span class="text-xs text-slate-400 font-bold">• GST Tax Audit & Loss Prevention</span>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Customized Reporting Engine</h2>
+            <p class="text-xs text-slate-500 font-medium">Real-time business intelligence, cashier shift reconciliation, and fraud prevention</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="exportReportsCSV()" class="bg-white border border-slate-300 text-slate-800 text-xs px-3.5 py-2 rounded-xl font-bold flex items-center space-x-1.5 shadow-xs hover:bg-slate-100 transition-colors cursor-pointer active:scale-95">
+              <i class="fa-solid fa-file-csv text-emerald-600 text-sm"></i>
+              <span>Export CSV</span>
+            </button>
+            <button onclick="dispatchDailyZReportWhatsApp()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center space-x-1.5 shadow-md transition-all active:scale-95 cursor-pointer">
+              <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+              <span>Send Z-Report to Owner</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- REPORT SELECTOR TOOLBAR -->
+        <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center">
+              <i class="fa-solid fa-filter text-slate-400 mr-1.5"></i>Select Report:
+            </label>
+            <select id="report-type-select" onchange="changeReportType(this.value)" class="bg-slate-50 border border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+              <option value="sales_items" selected>📊 Item-wise Sales & Profit Contribution</option>
+              <option value="category_mix">📈 Category Revenue Breakdown</option>
+              <option value="hourly_rush">🔥 Hourly Peak Rush Heatmap</option>
+              <option value="tax_gst">🧾 GST Tax Audit (GSTR-1 / CGST + SGST)</option>
+              <option value="audit_voids">🚨 Loss Prevention: Void Bills & Cancelled KOTs</option>
+              <option value="payment_modes">💳 Payment Modes & Cash Drawer Reconciliation</option>
+              <option value="steward_perf">👨‍🍳 Steward & Captain Efficiency</option>
+              <option value="z_report">📅 Official Day-End Z-Report (Shift Closing)</option>
+            </select>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span class="text-xs text-slate-500 font-semibold">Date Range:</span>
+            <select id="report-date-range" onchange="changeReportType(document.getElementById('report-type-select').value)" class="bg-slate-50 border border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 focus:outline-none cursor-pointer">
+              <option value="today" selected>Today (Shift #1)</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="last7">Last 7 Days</option>
+              <option value="mtd">Month to Date (MTD)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- DYNAMIC REPORT CONTAINER -->
+        <div id="dynamic-report-content" class="space-y-4">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: AI AGENT COPILOT (UNLIMITED QUERIES)               -->
+    <!-- ======================================================== -->
+    <div id="view-ai" class="view-panel h-full min-h-0 hidden p-6 lg:p-8 bg-slate-50 overflow-y-auto">
+      <div class="max-w-5xl mx-auto space-y-6">
+        <!-- HEADER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="bg-purple-100 text-purple-800 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">AI Executive Copilot</span>
+              <span class="text-xs text-slate-400 font-bold">• Zero Query Limits</span>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">RestroDeck Restaurant AI Agent</h2>
+            <p class="text-xs text-slate-500 font-medium">Instant generative intelligence trained on your POS billing, inventory costs, and captain logs</p>
+          </div>
+          <span class="bg-white border border-purple-200 text-purple-700 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center space-x-1.5 shadow-xs">
+            <i class="fa-solid fa-brain text-purple-600"></i>
+            <span>Active Model: Gemini 2.0 POS Core</span>
+          </span>
+        </div>
+
+        <!-- QUICK PROMPT PILLS -->
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold text-slate-400">Quick Inquiries:</span>
+          <button onclick="askAIPrompt('What are my highest margin dishes today?')" class="bg-white hover:bg-purple-50 text-purple-900 border border-purple-200 text-xs font-bold px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95">
+            💡 Highest Margin Dishes
+          </button>
+          <button onclick="askAIPrompt('How much Paneer and Chicken should I order for Friday dinner rush?')" class="bg-white hover:bg-purple-50 text-purple-900 border border-purple-200 text-xs font-bold px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95">
+            📦 Friday Rush Prep Forecast
+          </button>
+          <button onclick="askAIPrompt('Audit today for suspicious cancelled orders or void bills')" class="bg-white hover:bg-purple-50 text-purple-900 border border-purple-200 text-xs font-bold px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95">
+            🚨 Audit Fraud & Void Orders
+          </button>
+          <button onclick="askAIPrompt('Calculate my commission savings comparing Swiggy to WhatsApp')" class="bg-white hover:bg-purple-50 text-purple-900 border border-purple-200 text-xs font-bold px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95">
+            💰 Swiggy vs WhatsApp Savings
+          </button>
+        </div>
+
+        <!-- INTERACTIVE QUERY BOX -->
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-2">
+          <i class="fa-solid fa-wand-magic-sparkles text-purple-500 text-base ml-2"></i>
+          <input type="text" id="ai-query-input" placeholder="Ask any question about your menu margins, stock forecasts, or revenue..." class="flex-1 text-xs font-bold text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none">
+          <button onclick="handleAIQuerySubmit()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-black px-4 py-2 rounded-xl transition-transform active:scale-95 shadow-md shadow-purple-600/20 cursor-pointer flex items-center space-x-1.5">
+            <span>Ask AI</span>
+            <i class="fa-solid fa-paper-plane text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- AI RESPONSE STREAM -->
+        <div id="ai-response-stream" class="space-y-4">
+          <!-- Default Welcome Card -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="font-extrabold text-xs text-purple-700 flex items-center">
+                <i class="fa-solid fa-robot mr-1.5"></i>AI Copilot Ready
+              </span>
+              <span class="text-[10px] text-slate-400 font-mono">Live In-Memory Analysis</span>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed">
+              Hello! I am your <b>RestroDeck AI Copilot</b>. I continuously analyze your orders, KDS ticket velocities, raw ingredient levels, and aggregator commissions. Click any inquiry above or ask me a custom question to see instant operational intelligence.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: SELF-ORDERING KIOSK MODE (CUSTOMER FACING)         -->
+    <!-- ======================================================== -->
+    <div id="view-kiosk" class="view-panel h-full min-h-0 hidden flex flex-row relative overflow-hidden bg-slate-50/70 select-none">
+      
+      <!-- LEFT AREA: KIOSK MENU & CATEGORIES (SCROLLS INDEPENDENTLY) -->
+      <div class="flex-1 min-h-0 flex flex-col h-full overflow-hidden">
+        
+        <!-- KIOSK TOP HEADER (CLEAN WHITE LIKE POS) -->
+        <div class="bg-white px-5 py-3 border-b border-slate-200/90 flex items-center justify-between shrink-0 shadow-2xs">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-base border border-emerald-300 shadow-2xs">
+              <i class="fa-solid fa-tablet-screen-button"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h2 class="font-black text-sm sm:text-base text-slate-900 leading-tight" id="kiosk-brand-title">Spice Symphony Bistro</h2>
+                <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md">Self-Order Kiosk</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium">Touch menu to select dishes • Instant UPI QR Pay • Direct Kitchen KDS</p>
+            </div>
+          </div>
+
+          <!-- CONTROLS: DINING MODE, VEG TOGGLE & STAFF EXIT -->
+          <div class="flex items-center space-x-2.5">
+            <!-- Dine-in vs Takeaway Switcher -->
+            <div class="bg-slate-100/90 p-1 rounded-xl border border-slate-200/90 flex items-center space-x-1 text-xs font-bold">
+              <button onclick="setKioskOrderType('DINE_IN')" id="kiosk-mode-dinein" class="px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer bg-emerald-600 text-white shadow-2xs flex items-center space-x-1">
+                <i class="fa-solid fa-utensils text-xs"></i>
+                <span>Dine In</span>
+              </button>
+              <button onclick="setKioskOrderType('TAKEAWAY')" id="kiosk-mode-takeaway" class="px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer text-slate-600 hover:text-slate-900 flex items-center space-x-1">
+                <i class="fa-solid fa-bag-shopping text-xs"></i>
+                <span>Takeaway</span>
+              </button>
+            </div>
+
+            <!-- Pure Veg Toggle -->
+            <button onclick="toggleKioskVegFilter()" id="kiosk-veg-toggle" class="bg-white hover:bg-slate-50 border border-slate-200/90 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 transition-all flex items-center space-x-1.5 cursor-pointer shadow-2xs">
+              <span class="w-2.5 h-2.5 rounded-full border border-emerald-500 flex items-center justify-center p-0.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span></span>
+              <span>Pure Veg</span>
+            </button>
+
+            <!-- Exit Kiosk (Staff Exit) -->
+            <button onclick="exitKioskMode()" title="Exit Kiosk to POS Billing" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors flex items-center space-x-1.5 cursor-pointer shadow-2xs">
+              <i class="fa-solid fa-right-from-bracket text-xs"></i>
+              <span>Exit Kiosk</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KIOSK CATEGORIES & SEARCH BAR -->
+        <div class="bg-white px-5 py-2.5 border-b border-slate-200/90 flex items-center justify-between gap-3 shrink-0">
+          <div class="flex items-center space-x-1.5 overflow-x-auto scrollbar-none py-0.5" id="kiosk-category-pills">
+            <!-- Populated by JS -->
+          </div>
+          <div class="relative w-44 sm:w-56 shrink-0">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+            <input type="text" id="kiosk-menu-search" oninput="handleKioskMenuSearch(this.value)" placeholder="Search dishes..." class="w-full bg-slate-100 text-xs pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:bg-white transition-all text-slate-800 font-medium placeholder-slate-400">
+          </div>
+        </div>
+
+        <!-- KIOSK DISHES GRID (CLEAN WHITE CARDS) -->
+        <div class="flex-1 min-h-0 overflow-y-auto p-5" id="kiosk-menu-container">
+          <div id="kiosk-menu-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 pb-8">
+            <!-- Populated by renderKioskMenu() -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- RIGHT SIDEBAR: KIOSK CART DRAWER (EXACT SAME AS POS)     -->
+      <!-- ======================================================== -->
+      <aside id="kiosk-cart-drawer" class="w-[380px] lg:w-[410px] xl:w-[420px] bg-white flex flex-col h-full max-h-full shadow-2xl border-l border-slate-200/90 shrink-0 z-20 overflow-hidden">
+        
+        <!-- CART HEADER -->
+        <div class="bg-white p-3.5 border-b border-slate-200/90 space-y-1.5 shrink-0 shadow-2xs select-none">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <div class="bg-emerald-600 text-white font-black text-xs px-2.5 py-1.5 rounded-xl shadow-xs">Your Tray</div>
+              <span id="kiosk-cart-ordertype-badge" class="text-xs text-slate-900 font-extrabold">Dine-in Order</span>
+            </div>
+            
+            <button onclick="clearKioskCart()" id="btn-clear-kiosk-cart" class="text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 shadow-2xs active:scale-95">
+              <i class="fa-solid fa-trash-can text-[11px]"></i>
+              <span>Clear Tray</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">Add kitchen notes & cooking instructions below</p>
+        </div>
+
+        <!-- KIOSK CART ITEMS LIST (WITH ITEM-LEVEL NOTES & CHIPS) -->
+        <div class="flex-1 min-h-0 overflow-y-auto p-4 space-y-3" id="kiosk-cart-items-container">
+          <!-- Populated by renderKioskCart() -->
+        </div>
+
+        <!-- TOTALS BREAKDOWN -->
+        <div class="bg-slate-50 p-3.5 border-t border-slate-200/90 shrink-0 text-xs space-y-1.5">
+          <div class="flex justify-between text-slate-600">
+            <span>Item Subtotal</span>
+            <span class="font-bold text-slate-900 font-mono" id="kiosk-cart-subtotal">₹ 0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>GST (5% Restaurant Tax)</span>
+            <span class="font-bold text-slate-900 font-mono" id="kiosk-cart-tax">₹ 0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-600" id="kiosk-packaging-row" style="display: none;">
+            <span>Container / Packaging</span>
+            <span class="font-bold text-slate-900 font-mono" id="kiosk-cart-packaging">₹ 15.00</span>
+          </div>
+          <div class="pt-2 border-t border-slate-200 flex justify-between items-baseline">
+            <span class="font-extrabold text-sm text-slate-900">Total Amount</span>
+            <span class="font-black text-xl text-emerald-600 font-mono tracking-tight" id="kiosk-cart-total">₹ 0.00</span>
+          </div>
+        </div>
+
+        <!-- PAY WITH UPI QR BUTTON -->
+        <div class="p-3.5 bg-white border-t border-slate-200/90 shrink-0 space-y-2">
+          <button id="btn-kiosk-checkout" onclick="proceedToKioskPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/25 transition-all active:scale-95 cursor-pointer disabled:opacity-40 disabled:pointer-events-none">
+            <i class="fa-solid fa-qrcode text-base text-emerald-200"></i>
+            <span>Pay with UPI QR (₹ <span id="kiosk-pay-btn-amount">0.00</span>)</span>
+            <i class="fa-solid fa-arrow-right text-xs opacity-75"></i>
+          </button>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADD TABLE (ADMIN FEATURE)                         -->
+  <!-- ======================================================== -->
+  <div id="modal-add-table" style="display: none;" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <h3 class="font-black text-sm flex items-center">
+          <i class="fa-solid fa-plus-circle text-emerald-400 mr-2"></i>Add New Table / Section
+        </h3>
+        <button onclick="closeModal('modal-add-table')" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3.5">
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Table Name:</label>
+          <input type="text" id="new-table-name" placeholder="e.g. Table 7 or VIP 1" class="w-full bg-slate-50 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Floor Section:</label>
+          <select id="new-table-section" class="w-full bg-slate-50 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+            <option value="AC Dine-in">AC Dine-in</option>
+            <option value="Outdoor Lawn">Outdoor Lawn</option>
+            <option value="Rooftop Terrace">Rooftop Terrace</option>
+            <option value="Takeaway Counter">Takeaway Counter</option>
+            <option value="WhatsApp Online">WhatsApp Online</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Seating Capacity:</label>
+          <select id="new-table-seats" class="w-full bg-slate-50 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+            <option value="2">2 Seater</option>
+            <option value="4" selected>4 Seater</option>
+            <option value="6">6 Seater</option>
+            <option value="8">8 Seater (Family / Group)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-add-table')" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+          Cancel
+        </button>
+        <button onclick="confirmAddTable()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-2.5 rounded-xl shadow-md shadow-emerald-600/20 flex items-center justify-center space-x-1.5 transition-transform active:scale-95">
+          <i class="fa-solid fa-check"></i>
+          <span>Save Table</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADD MENU ITEM (ADMIN FEATURE)                     -->
+  <!-- ======================================================== -->
+  <div id="modal-add-menu" style="display: none;" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <h3 class="font-black text-sm flex items-center">
+          <i class="fa-solid fa-utensils text-emerald-400 mr-2"></i>Add New Dish to Menu
+        </h3>
+        <button onclick="closeModal('modal-add-menu')" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3.5">
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Dish Name:</label>
+          <input type="text" id="new-item-name" placeholder="e.g. Paneer Lababdar or Tandoori Wings" class="w-full bg-slate-50 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Category:</label>
+            <select id="new-item-category" class="w-full bg-slate-50 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+              <option value="Starters">Starters</option>
+              <option value="Main Course" selected>Main Course</option>
+              <option value="Breads">Breads</option>
+              <option value="Biryani">Biryani</option>
+              <option value="Beverages">Beverages</option>
+              <option value="Desserts">Desserts</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Selling Price (₹):</label>
+            <input type="number" id="new-item-price" placeholder="320" class="w-full bg-slate-50 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold font-mono text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Dietary Type:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="setNewItemVeg(true)" id="btn-veg-type" class="p-2 rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center justify-center space-x-1 shadow-xs">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+              <span>100% Pure Veg</span>
+            </button>
+            <button type="button" onclick="setNewItemVeg(false)" id="btn-nonveg-type" class="p-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center space-x-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+              <span>Non-Vegetarian</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Brief Description / Chef Notes:</label>
+          <input type="text" id="new-item-desc" placeholder="e.g. Rich tomato cashew gravy with cottage cheese" class="w-full bg-slate-50 border border-slate-300 px-3.5 py-2 rounded-xl text-xs text-slate-800 focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:bg-white focus:outline-none">
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-add-menu')" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+          Cancel
+        </button>
+        <button onclick="confirmAddMenuItem()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-2.5 rounded-xl shadow-md shadow-emerald-600/20 flex items-center justify-center space-x-1.5 transition-transform active:scale-95">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add to Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: DELETE CART / VOID ORDER CONFIRMATION             -->
+  <!-- ======================================================== -->
+  <div id="modal-delete-cart" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-rose-600 text-white p-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-trash-can text-lg text-rose-200"></i>
+          <span class="text-sm font-black uppercase tracking-wide">Clear Cart & Reset Table</span>
+        </div>
+        <button onclick="closeModal('modal-delete-cart')" class="text-rose-200 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3">
+        <div class="bg-rose-50 border border-rose-200 rounded-2xl p-3 text-xs text-rose-950 space-y-1">
+          <div class="flex justify-between font-bold">
+            <span id="delete-modal-table-name">Table 2</span>
+            <span id="delete-modal-order-id" class="font-mono text-rose-700">#ORD-101</span>
+          </div>
+          <p class="text-[11px] text-rose-800" id="delete-modal-desc">
+            Active order will be cancelled.
+          </p>
+        </div>
+
+        <p class="text-xs text-slate-600 leading-relaxed">
+          This will remove all items from this table, clear it from Kitchen KDS, and reset the table to <strong>Vacant (₹0.00)</strong>.
+        </p>
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-delete-cart')" class="w-1/2 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs py-2.5 rounded-xl border border-slate-300 transition-colors cursor-pointer">
+          Keep Order
+        </button>
+        <button onclick="confirmDeleteEntireCart()" class="w-1/2 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs py-2.5 rounded-xl shadow-md shadow-rose-600/30 flex items-center justify-center space-x-1.5 transition-transform active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-trash-can"></i>
+          <span>Yes, Clear Cart</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: SETTLE PAYMENT & WHATSAPP BILL                   -->
+  <!-- ======================================================== -->
+  <div id="modal-settle" style="display: none;" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <h3 class="font-black text-sm flex items-center">
+          <i class="fa-solid fa-receipt mr-2 text-emerald-400"></i>Settle Order & Send Digital Invoice
+        </h3>
+        <button onclick="closeModal('modal-settle')" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <!-- BILL TOTAL BANNER -->
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 flex justify-between items-center">
+          <div>
+            <span class="text-xs text-slate-500 font-bold" id="modal-table-label">Table 2 (AC Dine-in)</span>
+            <div class="text-xs text-slate-400" id="modal-items-summary">3 Items</div>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 uppercase font-bold">Total Due</span>
+            <div class="text-xl font-black text-emerald-600 font-mono" id="modal-total-amount">₹ 819.00</div>
+          </div>
+        </div>
+
+        <!-- PAYMENT MODE SELECTOR -->
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Select Payment Mode:</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="selectPaymentMode('UPI_QR')" id="pay-upi" class="pay-mode-btn bg-emerald-50 border border-emerald-500 text-emerald-800 p-2.5 rounded-2xl font-bold text-xs flex flex-col items-center shadow-xs">
+              <i class="fa-solid fa-qrcode text-lg mb-1"></i>
+              <span>UPI QR Code</span>
+            </button>
+            <button onclick="selectPaymentMode('CASH')" id="pay-cash" class="pay-mode-btn bg-white border border-slate-200 text-slate-700 hover:border-slate-400 p-2.5 rounded-2xl font-bold text-xs flex flex-col items-center">
+              <i class="fa-solid fa-money-bill-wave text-lg mb-1"></i>
+              <span>Cash</span>
+            </button>
+            <button onclick="selectPaymentMode('CARD')" id="pay-card" class="pay-mode-btn bg-white border border-slate-200 text-slate-700 hover:border-slate-400 p-2.5 rounded-2xl font-bold text-xs flex flex-col items-center">
+              <i class="fa-solid fa-credit-card text-lg mb-1"></i>
+              <span>Card / POS</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- DYNAMIC UPI QR DISPLAY CONTAINER -->
+        <div id="upi-qr-box" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col items-center">
+          <p class="text-[11px] font-bold text-slate-700 mb-2">Scan with PhonePe / GooglePay / Paytm</p>
+          <div class="w-36 h-36 bg-white p-2 rounded-xl border border-slate-200 shadow-xs flex items-center justify-center">
+            <!-- Simulated QR -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=spicesymphony@okhdfcbank%26pn=SpiceSymphony%26am=819" alt="UPI QR" class="w-full h-full object-contain">
+          </div>
+          <span class="text-[10px] text-emerald-600 font-black mt-2 flex items-center">
+            <i class="fa-solid fa-circle-check mr-1"></i>Instant Payment Webhook Active
+          </span>
+        </div>
+
+        <!-- WHATSAPP PHONE NUMBER INPUT -->
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+            <i class="fa-brands fa-whatsapp text-whatsapp mr-1"></i>Customer WhatsApp Number:
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-2.5 text-xs font-bold text-slate-400">+91</span>
+            <input type="tel" id="customer-phone-input" value="9820198201" placeholder="98XXXXXXXX" class="w-full bg-slate-50 border border-slate-300 pl-11 pr-3 py-2 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+          </div>
+          <span class="text-[10px] text-slate-500 mt-1 block">Sends digital PDF invoice + saves paper rolls + requests 5-star Google review.</span>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-settle')" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+          Cancel
+        </button>
+        <button onclick="confirmSettleAndSendBill()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-2.5 rounded-xl shadow-lg shadow-emerald-600/25 flex items-center justify-center space-x-1.5 transition-transform active:scale-95">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Confirm & Send WhatsApp Bill</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ESC/POS THERMAL RECEIPT PREVIEW & PRINT           -->
+  <!-- ======================================================== -->
+  <div id="modal-receipt" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-slate-900 text-white p-3.5 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-receipt text-emerald-400 text-sm"></i>
+          <span class="text-xs font-black uppercase tracking-wide">Customer Tax Invoice</span>
+        </div>
+        <!-- Paper Size Switcher -->
+        <div class="flex items-center space-x-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700 text-[10px]">
+          <button onclick="setReceiptPaperWidth('80mm')" id="btn-paper-80mm" class="px-2 py-0.5 rounded font-bold bg-emerald-600 text-white transition-all cursor-pointer">80mm</button>
+          <button onclick="setReceiptPaperWidth('58mm')" id="btn-paper-58mm" class="px-2 py-0.5 rounded font-bold text-slate-400 hover:text-white transition-all cursor-pointer">58mm</button>
+        </div>
+        <button onclick="closeModal('modal-receipt')" class="text-slate-400 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-4 bg-slate-100 max-h-[480px] overflow-y-auto">
+        <!-- THERMAL PAPER SLIP STYLING -->
+        <div id="thermal-receipt-content" class="bg-white p-4 font-mono text-[11px] text-slate-900 border border-slate-300 shadow-sm rounded-lg space-y-2">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <div class="p-3 bg-white border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-receipt')" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl border border-slate-200 transition-colors cursor-pointer">
+          Close
+        </button>
+        <button onclick="openThermalKOTModal()" class="w-1/3 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs py-2.5 rounded-xl flex items-center justify-center space-x-1 transition-colors cursor-pointer">
+          <i class="fa-solid fa-kitchen-set text-amber-600"></i>
+          <span>KOT Slip</span>
+        </button>
+        <button onclick="triggerThermalPrint('receipt')" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs py-2.5 rounded-xl flex items-center justify-center space-x-1.5 shadow-md shadow-slate-900/20 active:scale-95 transition-all cursor-pointer">
+          <i class="fa-solid fa-print"></i>
+          <span>Print Slip</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: KITCHEN ORDER TICKET (KOT) THERMAL PRINT          -->
+  <!-- ======================================================== -->
+  <div id="modal-kot" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-amber-500 text-slate-950 p-3.5 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-kitchen-set text-slate-950 text-sm"></i>
+          <span class="text-xs font-black uppercase tracking-wide">Kitchen Order Ticket (KOT)</span>
+        </div>
+        <div class="flex items-center space-x-1 bg-amber-600/40 p-0.5 rounded-lg border border-amber-600/60 text-[10px]">
+          <button onclick="setKOTPaperWidth('80mm')" id="btn-kot-80mm" class="px-2 py-0.5 rounded font-bold bg-slate-950 text-white transition-all cursor-pointer">80mm</button>
+          <button onclick="setKOTPaperWidth('58mm')" id="btn-kot-58mm" class="px-2 py-0.5 rounded font-bold text-amber-950 hover:text-white transition-all cursor-pointer">58mm</button>
+        </div>
+        <button onclick="closeModal('modal-kot')" class="text-slate-900 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-4 bg-slate-100 max-h-[480px] overflow-y-auto">
+        <div id="thermal-kot-content" class="bg-white p-4 font-mono text-[11px] text-slate-900 border border-slate-300 shadow-sm rounded-lg space-y-2">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <div class="p-3 bg-white border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-kot')" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl border border-slate-200 cursor-pointer">
+          Close
+        </button>
+        <button onclick="triggerThermalPrint('kot')" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs py-2.5 rounded-xl flex items-center justify-center space-x-1.5 shadow-md shadow-amber-500/30 active:scale-95 transition-all cursor-pointer">
+          <i class="fa-solid fa-print"></i>
+          <span>Print KOT Slip</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: KIOSK TRAY CHECKOUT & REVIEW                      -->
+  <!-- ======================================================== -->
+  <div id="modal-kiosk-checkout" style="display: none;" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 items-center justify-center p-4 select-none">
+    <div class="bg-slate-900 text-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-800 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-gradient-to-r from-purple-700 to-indigo-700 p-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2.5">
+          <i class="fa-solid fa-bag-shopping text-xl text-purple-200"></i>
+          <div>
+            <h3 class="font-black text-base leading-tight">Review Your Order</h3>
+            <p class="text-[11px] text-purple-200" id="kiosk-modal-ordertype">Dine-in Order</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-kiosk-checkout')" class="text-purple-200 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 max-h-[60vh] overflow-y-auto">
+        <!-- ITEMS LIST -->
+        <div id="kiosk-checkout-items" class="space-y-2.5 divide-y divide-slate-800">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- SPECIAL INSTRUCTIONS -->
+        <div>
+          <label class="block text-xs font-bold text-slate-400 mb-1">Kitchen Instructions (Optional):</label>
+          <input type="text" id="kiosk-notes-input" placeholder="e.g. Less spicy, extra sauce" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        </div>
+
+        <!-- MOBILE PHONE FOR WHATSAPP BILL -->
+        <div>
+          <label class="block text-xs font-bold text-slate-400 mb-1">WhatsApp Number (For Digital Receipt):</label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-2.5 text-xs text-slate-500 font-bold">+91</span>
+            <input type="tel" id="kiosk-phone-input" placeholder="98201 98201" maxlength="10" class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-3.5 py-2 text-xs font-mono font-bold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+        </div>
+
+        <!-- TOTALS BREAKDOWN -->
+        <div class="bg-slate-800/80 rounded-2xl p-3.5 border border-slate-700/80 space-y-1.5 text-xs">
+          <div class="flex justify-between text-slate-400">
+            <span>Subtotal</span>
+            <span id="kiosk-bill-subtotal" class="font-mono">₹ 0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>GST (5% Restaurant Tax)</span>
+            <span id="kiosk-bill-tax" class="font-mono">₹ 0.00</span>
+          </div>
+          <div class="flex justify-between font-black text-sm text-white pt-1.5 border-t border-slate-700">
+            <span>Grand Total</span>
+            <span id="kiosk-bill-total" class="font-mono text-purple-400 text-base">₹ 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-950 border-t border-slate-800 flex space-x-3">
+        <button onclick="closeModal('modal-kiosk-checkout')" class="w-1/3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-3 rounded-2xl transition-colors cursor-pointer">
+          Add More
+        </button>
+        <button onclick="proceedToKioskPayment()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm py-3 rounded-2xl shadow-lg shadow-emerald-600/30 flex items-center justify-center space-x-2 transition-transform active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-qrcode text-base"></i>
+          <span>Pay with UPI QR (₹ <span id="kiosk-pay-btn-total">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: KIOSK DYNAMIC UPI QR PAYMENT & TOKEN SCREEN       -->
+  <!-- ======================================================== -->
+  <div id="modal-kiosk-payment" style="display: none;" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 items-center justify-center p-4 select-none">
+    <div class="bg-white text-slate-900 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- STEP 1: PAYMENT SCANNER -->
+      <div id="kiosk-step-scan" class="p-6 text-center space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+          <div class="text-left">
+            <h4 class="font-black text-base text-slate-900">Scan & Pay via UPI</h4>
+            <p class="text-[11px] text-slate-500 font-medium">GPay • PhonePe • Paytm • BHIM</p>
+          </div>
+          <span class="font-mono font-black text-emerald-600 text-xl" id="kiosk-scan-total">₹ 0.00</span>
+        </div>
+
+        <!-- DYNAMIC QR CODE BOX -->
+        <div class="bg-slate-50 p-4 rounded-3xl shadow-inner inline-block border-2 border-emerald-500/30">
+          <img id="kiosk-upi-qr-image" src="" alt="Scan to Pay" class="w-48 h-48 mx-auto object-contain bg-white p-2 rounded-2xl shadow-sm">
+        </div>
+
+        <!-- OPTIONAL WHATSAPP RECEIPT PHONE -->
+        <div class="text-left bg-slate-50 p-3 rounded-2xl border border-slate-200/80">
+          <label class="block text-[11px] font-bold text-slate-700 mb-1">WhatsApp Number (For digital receipt):</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-xs text-slate-400 font-bold">+91</span>
+            <input type="tel" id="kiosk-phone-input" placeholder="98200 12345" maxlength="10" class="w-full bg-white border border-slate-300 rounded-xl pl-11 pr-3 py-1.5 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div class="text-xs text-slate-500">
+          <div>Point any UPI camera app to scan and complete payment.</div>
+          <div class="mt-1 font-mono text-[11px] text-emerald-600 font-bold flex items-center justify-center space-x-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-1"></span>
+            <span>Awaiting payment confirmation...</span>
+          </div>
+        </div>
+
+        <div class="pt-2 flex space-x-2">
+          <button onclick="closeModal('modal-kiosk-payment')" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl cursor-pointer transition-colors">
+            Cancel
+          </button>
+          <button onclick="simulateKioskPaymentSuccess()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-2.5 rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center space-x-1.5 transition-transform active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-bolt text-amber-300"></i>
+            <span>Simulate Payment Received</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: TOKEN CONFIRMATION SCREEN (DISPLAYS TOKEN & KOT DISPATCH) -->
+      <div id="kiosk-step-success" style="display: none;" class="p-8 text-center space-y-5">
+        <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto border-2 border-emerald-400 shadow-xl shadow-emerald-600/20">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+
+        <div>
+          <span class="text-xs uppercase font-extrabold tracking-widest text-emerald-700">Order Placed Successfully!</span>
+          <div class="mt-2 py-3 px-6 bg-slate-50 rounded-2xl border border-slate-200 inline-block shadow-xs">
+            <div class="text-[11px] text-slate-500 font-bold uppercase">Your Order Token</div>
+            <div class="text-4xl font-black text-slate-900 font-mono tracking-tight mt-0.5" id="kiosk-token-number">TOKEN #K-105</div>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-600 max-w-xs mx-auto leading-relaxed">
+          Your order has been sent straight to the <strong>Kitchen KDS</strong> with all your chef notes! Please take your seat.
+        </p>
+
+        <div class="pt-2 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+          <button onclick="printKioskTokenSlip()" class="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-bold text-xs py-3 rounded-xl flex items-center justify-center space-x-1.5 cursor-pointer transition-colors">
+            <i class="fa-solid fa-print"></i>
+            <span>Print Token Slip</span>
+          </button>
+          <button onclick="finishKioskSession()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl flex items-center justify-center space-x-1.5 cursor-pointer shadow-lg shadow-emerald-600/30 transition-transform active:scale-95">
+            <span>Start Next Order (<span id="kiosk-countdown">8</span>s)</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: PRO ENTERPRISE PLAN UPGRADE PROMPT                -->
+  <!-- ======================================================== -->
+  <div id="modal-upgrade-plan" style="display: none;" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-gradient-to-r from-emerald-600 via-teal-700 to-slate-900 text-white p-5 flex justify-between items-start">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-lock text-emerald-300"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Pro Enterprise Feature</span>
+            <h3 class="font-black text-base mt-1" id="upgrade-feature-title">Kitchen Display System (KDS)</h3>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-upgrade-plan')" class="text-white/70 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <p class="text-xs text-slate-600 leading-relaxed" id="upgrade-feature-desc">
+          This feature requires the <b>Pro Enterprise Core</b> plan. Upgrade today for just <b>₹200 more/month</b> to unlock live kitchen ticket timers, Swiggy & Zomato 2-way sync, self-ordering touch kiosk, and AI copilot!
+        </p>
+
+        <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-black text-emerald-800 uppercase tracking-wider">Current Plan: Starter (₹599/mo)</div>
+            <div class="text-sm font-black text-slate-900 mt-0.5">Upgrade to Pro: ₹799/mo</div>
+          </div>
+          <span class="text-xs font-bold text-emerald-700 bg-white border border-emerald-300 px-2.5 py-1 rounded-xl shadow-2xs">+₹200/mo</span>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <button onclick="requestPlanUpgradeWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 transition-transform active:scale-95 flex items-center justify-center space-x-2 cursor-pointer">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span>Upgrade to Pro Enterprise (Instant Activation)</span>
+          </button>
+          <button onclick="closeModal('modal-upgrade-plan')" class="w-full text-slate-500 hover:text-slate-800 text-xs font-bold py-2">
+            Continue with Starter Plan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ONLINE TRAINING & 24x7 SUPPORT DESK               -->
+  <!-- ======================================================== -->
+  <div id="modal-support" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <h3 class="font-black text-sm flex items-center">
+          <i class="fa-solid fa-headset text-emerald-400 mr-2"></i>Installation, Online Training & 24x7 Support
+        </h3>
+        <button onclick="closeModal('modal-support')" class="text-slate-400 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 max-h-[75vh] overflow-y-auto">
+        <!-- 24x7 PRIORITY DESK BANNER -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
+          <div>
+            <span class="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Live Support 24x7</span>
+            <h4 class="font-black text-sm mt-1">Dedicated Restaurant Success Manager</h4>
+            <p class="text-[11px] text-emerald-100">Average response time: 2.4 minutes on WhatsApp</p>
+          </div>
+          <button onclick="window.open('https://wa.me/919313838165?text=Hi%20RestroDeck%20Support%2C%20I%20need%20help%20with%20my%20POS', '_blank')" class="bg-white text-emerald-950 font-black text-xs px-3.5 py-2 rounded-xl shadow-md transition-transform active:scale-95 cursor-pointer flex items-center space-x-1.5 shrink-0">
+            <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+            <span>Chat Now</span>
+          </button>
+        </div>
+
+        <!-- 3-MINUTE STAFF CERTIFICATION & ONLINE TRAINING -->
+        <div>
+          <h4 class="font-black text-xs text-slate-800 uppercase tracking-wider mb-2.5 flex items-center">
+            <i class="fa-solid fa-graduation-cap text-blue-600 mr-1.5"></i>Interactive Online Staff Training Modules
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div class="border border-slate-200 bg-slate-50 p-3 rounded-xl flex flex-col justify-between">
+              <div>
+                <span class="text-slate-400 text-[10px] font-bold font-mono">MODULE 1</span>
+                <h5 class="font-extrabold text-xs text-slate-900 mt-0.5">Cashier Terminal</h5>
+                <p class="text-[10px] text-slate-500 mt-0.5">Speed billing, discounts, split payment & day-end Z-report.</p>
+              </div>
+              <button onclick="showToast('🎓 Cashier Training video launched!')" class="mt-2.5 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[10px] font-bold py-1 px-2 rounded-lg text-center cursor-pointer transition-colors">
+                ▶ Start (3 Mins)
+              </button>
+            </div>
+
+            <div class="border border-slate-200 bg-slate-50 p-3 rounded-xl flex flex-col justify-between">
+              <div>
+                <span class="text-slate-400 text-[10px] font-bold font-mono">MODULE 2</span>
+                <h5 class="font-extrabold text-xs text-slate-900 mt-0.5">Captain Handheld</h5>
+                <p class="text-[10px] text-slate-500 mt-0.5">Table punching, kitchen instructions, seat numbers & add-on KOT.</p>
+              </div>
+              <button onclick="showToast('🎓 Captain Mobile Guide launched!')" class="mt-2.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-[10px] font-bold py-1 px-2 rounded-lg text-center cursor-pointer transition-colors">
+                ▶ Start (2 Mins)
+              </button>
+            </div>
+
+            <div class="border border-slate-200 bg-slate-50 p-3 rounded-xl flex flex-col justify-between">
+              <div>
+                <span class="text-slate-400 text-[10px] font-bold font-mono">MODULE 3</span>
+                <h5 class="font-extrabold text-xs text-slate-900 mt-0.5">Kitchen Chef KDS</h5>
+                <p class="text-[10px] text-slate-500 mt-0.5">KOT orders, prep timer, mark as ready & course firing.</p>
+              </div>
+              <button onclick="showToast('🎓 Kitchen Chef KDS Guide launched!')" class="mt-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[10px] font-bold py-1 px-2 rounded-lg text-center cursor-pointer transition-colors">
+                ▶ Start (2 Mins)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLOUD ONBOARDING GUARANTEE -->
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1.5">
+          <div class="font-bold text-slate-900 flex items-center">
+            <i class="fa-solid fa-cloud-arrow-up text-emerald-600 mr-1.5"></i>Zero-Downtime Migration from Petpooja
+          </div>
+          <p class="text-[11px] leading-relaxed">
+            Our engineering team migrates your entire Petpooja menu, item variants, customer database, and raw material recipes within <b>2 hours</b> with zero operational downtime.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <button onclick="closeModal('modal-support')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors cursor-pointer">
+          Done & Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: CREATE PURCHASE ORDER (HYPERPURE / SWIGGY ASSURE)  -->
+  <!-- ======================================================== -->
+  <div id="modal-create-po" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <h3 class="font-black text-sm flex items-center">
+          <i class="fa-solid fa-cart-plus text-teal-400 mr-2"></i>Create Wholesale Purchase Order (PO)
+        </h3>
+        <button onclick="closeModal('modal-create-po')" class="text-slate-400 hover:text-white p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3.5">
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Procurement Supplier:</label>
+          <select id="po-supplier" class="w-full bg-slate-50 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+            <option value="Hyperpure by Zomato" selected>Hyperpure by Zomato (Dairy, Poultry & Veggies)</option>
+            <option value="Swiggy Assure B2B">Swiggy Assure B2B (Rice, Oil, Spices & Staples)</option>
+            <option value="DeliverIT (DIY Packaging)">DeliverIT (Handi Boxes & Paper Bags)</option>
+            <option value="Vashi APMC Mandi (DIY)">Vashi APMC Mandi (Local Vegetables & Dairy)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Ingredients / Items to Order:</label>
+          <input type="text" id="po-items" placeholder="e.g. 15kg Fresh Malai Paneer, 20kg Chicken" class="w-full bg-slate-50 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Estimated Cost (₹):</label>
+            <input type="number" id="po-amount" placeholder="4500" class="w-full bg-slate-50 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold font-mono text-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">Expected Delivery:</label>
+            <select id="po-eta" class="w-full bg-slate-50 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+              <option value="Today Evening (7 PM)">Today Evening (7 PM)</option>
+              <option value="Tomorrow Morning (6 AM)" selected>Tomorrow Morning (6 AM)</option>
+              <option value="Immediate 2 Hours">Immediate 2 Hours</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex space-x-2">
+        <button onclick="closeModal('modal-create-po')" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors cursor-pointer">
+          Cancel
+        </button>
+        <button onclick="confirmCreatePurchaseOrder()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white text-xs font-black py-2.5 rounded-xl shadow-md shadow-teal-600/20 flex items-center justify-center space-x-1.5 transition-transform active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-check"></i>
+          <span>Dispatch Purchase Order</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- FULLSCREEN SECURITY OVERLAY: ACCOUNT DEACTIVATED (LOCKED) -->
+  <!-- ======================================================== -->
+  <div id="screen-deactivated" style="display: none;" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[9999] items-center justify-center p-4 select-none animate-in fade-in duration-200">
+    <div class="bg-slate-900 border border-rose-500/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-5">
+      <div class="w-20 h-20 bg-rose-500/10 text-rose-500 rounded-3xl flex items-center justify-center text-4xl mx-auto border border-rose-500/20 shadow-lg shadow-rose-500/20">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <div class="space-y-2">
+        <span class="text-[10px] font-black uppercase tracking-widest bg-rose-950 text-rose-400 border border-rose-800/80 px-3 py-1 rounded-full">Terminal Deactivated</span>
+        <h3 class="text-xl font-black text-white" id="deactivated-restaurant-name">Restaurant Outlet</h3>
+        <p class="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto" id="deactivated-reason-text">
+          Access to this RestroDeck POS terminal has been deactivated by SuperAdmin (e.g. pending renewal, subscription hold, or account suspension). All billing and staff login functions are locked.
+        </p>
+      </div>
+      <div class="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center">
+        <a href="/pricing" class="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition-transform active:scale-95 cursor-pointer flex items-center justify-center space-x-1.5">
+          <i class="fa-solid fa-tags text-xs"></i>
+          <span>Pricing Plans</span>
+        </a>
+        <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%20Support%2C%20our%20restaurant%20POS%20shows%20Terminal%20Suspended.%20Please%20help%20reactivate%20our%20account." target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/30 transition-transform active:scale-95 cursor-pointer flex items-center justify-center space-x-2">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Contact Support</span>
+        </a>
+        <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-3 px-4 rounded-xl cursor-pointer transition-colors flex items-center justify-center space-x-1.5">
+          <i class="fa-solid fa-rotate-right text-xs"></i>
+          <span>Check Status</span>
+        </button>
+      </div>
+      <p class="text-[10px] text-slate-500 font-mono">RestroDeck Cloud POS • Tenant Security Firewall</p>
+    </div>
+  </div>
+
+  <!-- DEDICATED THERMAL RECEIPT PRINT WRAPPER FOR ESC/POS PRINTERS -->
+  <div id="print-receipt-wrapper" style="display: none;"></div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script src="app.js?v=20261104_header_perfect_layout"></script>
+</body>
+</html>

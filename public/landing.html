@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RestroDeck | The All-in-One Cloud POS for Modern Restaurants</title>
+  
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20261102_1400">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261102_1400">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261102_1400">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20261102_1400">
+  <link rel="shortcut icon" href="favicon.ico?v=20261102_1400">
+  <meta name="theme-color" content="#059669">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- ======================================================== -->
+  <!-- TOP STICKY NAVIGATION BAR                                -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- BRAND LOGO -->
+      <a href="/" class="flex items-center space-x-3 cursor-pointer group">
+        <img src="apple-touch-icon.png?v=20261102_1400" alt="RestroDeck" class="w-9 h-9 rounded-xl shadow-xs border border-emerald-500/20 object-cover group-hover:scale-105 transition-transform">
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <span class="font-black text-lg tracking-tight text-slate-900 leading-tight">RestroDeck</span>
+            <span class="text-[9px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 border border-emerald-300 px-1.5 py-0.2 rounded">Cloud POS</span>
+          </div>
+          <p class="text-[10px] text-slate-400 font-medium">restrodeck.com</p>
+        </div>
+      </a>
+
+      <!-- NAVIGATION LINKS -->
+      <nav class="hidden md:flex items-center space-x-7 text-xs font-bold text-slate-600">
+        <a href="#advantages" class="hover:text-emerald-600 transition-colors">Advantages</a>
+        <a href="#features" class="hover:text-emerald-600 transition-colors">Core Modules</a>
+        <a href="#compare" class="hover:text-emerald-600 transition-colors">Compare Petpooja</a>
+        <a href="#pricing" class="hover:text-emerald-600 transition-colors">Pricing</a>
+        <a href="#onboarding" class="hover:text-emerald-600 transition-colors">30-Min Setup</a>
+      </nav>
+
+      <!-- ACTION BUTTONS -->
+      <div class="flex items-center space-x-3">
+        <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%2C%20I%20want%20to%20schedule%20a%20demo%20for%20my%20restaurant" target="_blank" class="hidden sm:inline-flex items-center space-x-1.5 text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-2 rounded-xl transition-colors">
+          <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+          <span>Book Demo</span>
+        </a>
+        <a href="/pos" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 flex items-center space-x-2 transition-transform active:scale-95">
+          <span>Launch Live POS</span>
+          <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- HERO SECTION                                             -->
+  <!-- ======================================================== -->
+  <section class="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24 border-b border-slate-200 bg-gradient-to-b from-white via-slate-50 to-emerald-50/20">
+    <!-- BACKGROUND ACCENT BLURS -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+      
+      <!-- PILL TAG -->
+      <div class="inline-flex items-center space-x-2 bg-emerald-100/90 text-emerald-800 border border-emerald-300 text-xs px-3.5 py-1.5 rounded-full font-black shadow-2xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>The High-Speed Petpooja Alternative Built for 2026</span>
+      </div>
+
+      <!-- MAIN HEADLINE -->
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] max-w-4xl mx-auto">
+        The Intelligent Operating Deck for <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Modern Restaurants</span>
+      </h1>
+
+      <!-- SUB-HEADLINE -->
+      <p class="text-base sm:text-lg text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed">
+        Say goodbye to clunky Windows desktop software, ₹18,000/yr paper rolls, and 28% aggregator fees. RestroDeck gives you instant cloud billing, 0% WhatsApp orders, kitchen KDS, and wholesale procurement on any tablet or phone.
+      </p>
+
+      <!-- ACTION CTAS -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <a href="/pos" class="w-full sm:w-auto bg-slate-950 hover:bg-slate-900 text-white font-black text-sm px-7 py-3.5 rounded-2xl shadow-xl shadow-slate-900/10 flex items-center justify-center space-x-2.5 transition-all active:scale-95">
+          <i class="fa-solid fa-play text-emerald-400 text-xs"></i>
+          <span>Launch Live Interactive POS Demo</span>
+        </a>
+        <a href="#onboarding" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm px-6 py-3.5 rounded-2xl border border-slate-300 shadow-xs flex items-center justify-center space-x-2 transition-all">
+          <i class="fa-solid fa-clock-rotate-left text-slate-500 text-xs"></i>
+          <span>See How 30-Min Onboarding Works</span>
+        </a>
+      </div>
+
+      <!-- TRUST VALUE PROPOSITIONS -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-8 text-left">
+        <div class="flex items-center space-x-2.5 bg-white p-3 rounded-xl border border-slate-200/90 shadow-2xs">
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-xs font-bold"><i class="fa-solid fa-cloud"></i></div>
+          <span class="text-xs font-extrabold text-slate-800">Zero Install (Web PWA)</span>
+        </div>
+        <div class="flex items-center space-x-2.5 bg-white p-3 rounded-xl border border-slate-200/90 shadow-2xs">
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-xs font-bold"><i class="fa-brands fa-whatsapp"></i></div>
+          <span class="text-xs font-extrabold text-slate-800">0% WhatsApp Direct</span>
+        </div>
+        <div class="flex items-center space-x-2.5 bg-white p-3 rounded-xl border border-slate-200/90 shadow-2xs">
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-xs font-bold"><i class="fa-solid fa-tablet-screen-button"></i></div>
+          <span class="text-xs font-extrabold text-slate-800">Unlimited Devices Free</span>
+        </div>
+        <div class="flex items-center space-x-2.5 bg-white p-3 rounded-xl border border-slate-200/90 shadow-2xs">
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-xs font-bold"><i class="fa-solid fa-receipt"></i></div>
+          <span class="text-xs font-extrabold text-slate-800">Zero Thermal Paper Waste</span>
+        </div>
+      </div>
+
+      <!-- HERO INTERACTIVE UI PREVIEW TEASER -->
+      <div class="pt-10 max-w-5xl mx-auto">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-900 bg-slate-950 p-2 sm:p-3 group">
+          <div class="bg-slate-900 text-slate-300 px-4 py-2 flex items-center justify-between text-xs rounded-t-2xl font-mono border-b border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+              <span class="ml-2 text-slate-400">https://restrodeck.com/pos</span>
+            </div>
+            <a href="/pos" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-2.5 py-1 rounded-lg">Click to Try Live ➔</a>
+          </div>
+          <div class="bg-slate-100 rounded-b-2xl p-4 sm:p-6 text-left grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+            <!-- COLUMN 1: FLOOR & KDS -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="font-extrabold text-xs text-slate-900">Floor Layout & Tables</span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">Real-Time Sync</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2.5 rounded-xl border border-amber-200 bg-amber-50/40">
+                  <span class="font-black text-slate-900 block">Table 02</span>
+                  <span class="text-[10px] text-amber-700 font-bold">🍳 2 Items Cooking</span>
+                </div>
+                <div class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/40">
+                  <span class="font-black text-slate-900 block">Table 04</span>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔔 Food Ready</span>
+                </div>
+                <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50">
+                  <span class="font-black text-slate-900 block">Table 01</span>
+                  <span class="text-[10px] text-slate-500 font-bold">✨ Vacant</span>
+                </div>
+                <div class="p-2.5 rounded-xl border border-purple-200 bg-purple-50">
+                  <span class="font-black text-slate-900 block">Table 05</span>
+                  <span class="text-[10px] text-purple-700 font-bold">🔒 Reserved</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMN 2: CART BILLING & UPI QR -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="font-extrabold text-xs text-slate-900">High-Speed Cart</span>
+                <span class="text-[10px] text-slate-400 font-mono">5% GST Auto</span>
+              </div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between font-bold text-slate-800">
+                  <span>1x Butter Chicken (Classic)</span>
+                  <span class="font-mono">₹ 390</span>
+                </div>
+                <div class="flex justify-between font-bold text-slate-800">
+                  <span>2x Garlic Cheese Naan</span>
+                  <span class="font-mono">₹ 220</span>
+                </div>
+                <div class="pt-2 border-t border-slate-100 flex justify-between font-black text-slate-900 text-sm">
+                  <span>Total Payable:</span>
+                  <span class="text-emerald-700 font-mono">₹ 640.50</span>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 p-2 rounded-xl flex items-center justify-between text-[11px] text-emerald-900 font-bold">
+                  <span>Dynamic UPI QR:</span>
+                  <span class="text-xs">⚡ PhonePe / GPay Ready</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMN 3: WHATSAPP BOT PREVIEW -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="font-extrabold text-xs text-emerald-700 flex items-center">
+                  <i class="fa-brands fa-whatsapp mr-1.5 text-sm text-emerald-600"></i>WhatsApp Inbound
+                </span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">0% Fee</span>
+              </div>
+              <div class="bg-[#EFEAE2] p-2.5 rounded-xl space-y-2 text-[11px]">
+                <div class="bg-white p-2 rounded-lg text-slate-800 shadow-2xs">
+                  <p class="font-bold">Spice Symphony Invoice #204</p>
+                  <p class="text-slate-500 font-mono text-[10px]">Total: ₹ 641 • Paid via UPI</p>
+                </div>
+                <div class="bg-emerald-100 text-emerald-900 p-1.5 rounded-lg text-[10px] font-semibold text-center">
+                  ⭐ How was your meal? Review on Google
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 6 CORE ADVANTAGES (WHY RESTAURANTS SWITCH)                -->
+  <!-- ======================================================== -->
+  <section id="advantages" class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
+        Engineered for Restaurant Profits
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-3">
+        Why 1,000+ Smart Restaurants Are Replacing Legacy Systems
+      </h2>
+      <p class="text-slate-600 text-sm sm:text-base font-medium mt-2">
+        Most POS providers charge you for every extra screen, every SMS, and every aggregator. RestroDeck gives you an all-in-one command center with honest flat pricing.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- ADVANTAGE 1 -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">100% True Cloud & Zero-Install</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            No Windows `.exe` downloads, no DLL errors, and no local database corruptions. Open your restaurant URL on any iPad, Android tablet, phone, PC, or Mac. Onboards in 10 seconds.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-emerald-700 flex items-center justify-between">
+          <span>Petpooja: Windows PC Only</span>
+          <span>RestroDeck: Any Screen</span>
+        </div>
+      </div>
+
+      <!-- ADVANTAGE 2 -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">0% Commission WhatsApp Commerce</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Diners send text or voice orders on WhatsApp. Our AI sends an instant itemized bill with 5% GST, auto-generates a UPI payment QR, and pushes the order straight to the kitchen.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-emerald-700 flex items-center justify-between">
+          <span>Swiggy Cut: 28% Commission</span>
+          <span>WhatsApp Cut: 0% Direct</span>
+        </div>
+      </div>
+
+      <!-- ADVANTAGE 3 -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-fire-burner"></i>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Real-Time Kitchen KDS Display</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Put a ₹5,000 Android tablet in the kitchen. Orders land in real-time with elapsed timers, color-coded urgency, station routing (Tandoor/Curry), and audio chimes.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-emerald-700 flex items-center justify-between">
+          <span>Competitors: ₹3,000/yr Addon</span>
+          <span>RestroDeck: Included FREE</span>
+        </div>
+      </div>
+
+      <!-- ADVANTAGE 4 -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Swiggy & Zomato Omnichannel Hub</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Sync prices and 86 sold-out items across Swiggy and Zomato in 320ms. Tapping "86" disables out-of-stock dishes instantly to stop cancellation penalties.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-emerald-700 flex items-center justify-between">
+          <span>Petpooja: ₹4,000/yr Extra</span>
+          <span>RestroDeck: Included FREE</span>
+        </div>
+      </div>
+
+      <!-- ADVANTAGE 5 -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Hyperpure & Swiggy B2B Purchasing</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Order dairy, chicken, paneer, and groceries directly from Zomato Hyperpure, Swiggy Assure, or local Mandis. Auto-generates purchase orders with 1-tap WhatsApp dispatch.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-emerald-700 flex items-center justify-between">
+          <span>Manual Register Books</span>
+          <span>1-Tap Automated POs</span>
+        </div>
+      </div>
+
+      <!-- ADVANTAGE 6 -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Zero Paper Waste & Digital Bills</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Eliminate ₹1,500/month thermal paper roll costs. Customers receive a tax invoice on WhatsApp with UPI QR payment and an automated 5-star Google Review booster prompt.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-emerald-700 flex items-center justify-between">
+          <span>Paper Waste: ₹18,000/year</span>
+          <span>RestroDeck: ₹0 Paper Waste</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- PETPOOJA VS RESTRODECK COMPARISON TABLE                  -->
+  <!-- ======================================================== -->
+  <section id="compare" class="py-16 bg-slate-100/70 border-y border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-10">
+        <span class="bg-rose-100 text-rose-800 border border-rose-300 text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
+          The Uncensored Financial Comparison
+        </span>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight mt-2">
+          How Much Does Petpooja Really Cost You Every Year?
+        </h2>
+        <p class="text-slate-500 text-xs sm:text-sm mt-1">
+          See the hidden addon fees that silently drain your monthly restaurant profits.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900 text-white uppercase text-[11px] font-black">
+              <tr>
+                <th class="py-4 px-5">Features & Hidden Costs</th>
+                <th class="py-4 px-5 text-rose-300">Petpooja Incumbent</th>
+                <th class="py-4 px-5 text-emerald-400">RestroDeck Cloud POS</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Base POS Software License</td>
+                <td class="py-3 px-5 font-mono text-rose-600 font-bold">₹ 14,000 / yr</td>
+                <td class="py-3 px-5 font-mono text-emerald-700 font-bold">₹ 7,999 / yr (All Unlocked)</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Swiggy / Zomato Integration</td>
+                <td class="py-3 px-5 font-mono text-rose-600 font-bold">₹ 4,000 / yr (Addon)</td>
+                <td class="py-3 px-5 font-mono text-emerald-700 font-bold">₹ 0 (Included Free)</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Kitchen Display System (KDS) Screen</td>
+                <td class="py-3 px-5 font-mono text-rose-600 font-bold">₹ 3,000 / yr (Addon)</td>
+                <td class="py-3 px-5 font-mono text-emerald-700 font-bold">₹ 0 (Included Free)</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Device Licenses (Captains / Screens)</td>
+                <td class="py-3 px-5 font-mono text-rose-600 font-bold">₹ 8,000 - ₹14,000 / device</td>
+                <td class="py-3 px-5 font-mono text-emerald-700 font-bold">Unlimited Devices Free</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Thermal Paper Rolls (Average 40 rolls/mo)</td>
+                <td class="py-3 px-5 font-mono text-rose-600 font-bold">₹ 18,000 / yr</td>
+                <td class="py-3 px-5 font-mono text-emerald-700 font-bold">₹ 0 (WhatsApp Digital Bills)</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Direct 0% WhatsApp Ordering Channel</td>
+                <td class="py-3 px-5 text-slate-400">Not Available</td>
+                <td class="py-3 px-5 text-emerald-700 font-bold">Included (Saves ₹35k/mo)</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 font-bold text-slate-900">Customer Support SLA</td>
+                <td class="py-3 px-5 text-rose-600 font-bold">Centralized IVR (Slow)</td>
+                <td class="py-3 px-5 text-emerald-700 font-bold">Dedicated WhatsApp Group (&lt;3 mins)</td>
+              </tr>
+              <tr class="bg-emerald-50/70 border-t-2 border-emerald-300 font-black text-sm">
+                <td class="py-4 px-5 text-slate-900">TOTAL ANNUAL COST OUTFLOW</td>
+                <td class="py-4 px-5 text-rose-700 font-mono text-base">₹ 39,000 / yr+</td>
+                <td class="py-4 px-5 text-emerald-700 font-mono text-base">₹ 7,999 / yr (Save ₹31,000+)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- TRANSPARENT PRICING PLANS                                -->
+  <!-- ======================================================== -->
+  <section id="pricing" class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
+        Simple, Predictable Pricing
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-3">
+        No Per-Machine Penalties. No Hidden Addons.
+      </h2>
+      <p class="text-slate-600 text-xs sm:text-sm font-medium mt-1">
+        Run 1 billing PC, 5 waiter phones, 2 kitchen tablets, and 1 kiosk on any plan with zero extra device charges.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      
+      <!-- PLAN 1: STARTER -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-slate-500">For Cafes & Small QSRs</span>
+          <h3 class="text-xl font-black text-slate-900 mt-1">Starter Cloud</h3>
+          <div class="my-4">
+            <span class="text-3xl font-black text-slate-900 font-mono">₹ 599</span>
+            <span class="text-xs text-slate-500 font-semibold">/ month</span>
+            <p class="text-[11px] text-slate-400 mt-0.5">Billed annually at ₹ 5,999/yr</p>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-4">
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Unlimited Tables & Floor Plan</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Fast Touch Billing & Modifiers</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>WhatsApp Digital Tax Invoices</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Unlimited Devices & Captain Phones</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Daily Sales & GST Tax Reports</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/919313838165?text=I%20want%20to%20get%20started%20with%20RestroDeck%20Starter%20Plan" target="_blank" class="mt-6 w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs py-3 rounded-xl transition-colors">
+          Choose Starter Plan
+        </a>
+      </div>
+
+      <!-- PLAN 2: PRO ENTERPRISE (MOST POPULAR) -->
+      <div class="bg-gradient-to-b from-white to-emerald-50/40 rounded-3xl p-6 border-2 border-emerald-500 shadow-xl relative flex flex-col justify-between">
+        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow">
+          Most Popular • All Features Unlocked
+        </div>
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-emerald-700">For Full-Service Dining & Cloud Kitchens</span>
+          <h3 class="text-xl font-black text-slate-900 mt-1">Pro Enterprise Core</h3>
+          <div class="my-4">
+            <span class="text-4xl font-black text-emerald-700 font-mono">₹ 799</span>
+            <span class="text-xs text-slate-500 font-semibold">/ month</span>
+            <p class="text-[11px] text-emerald-800 font-bold mt-0.5">Billed annually at ₹ 7,999/yr</p>
+          </div>
+          <ul class="space-y-2.5 text-xs text-slate-700 border-t border-emerald-100 pt-4 font-medium">
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i><strong>Everything in Starter Plan</strong></li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>Interactive Kitchen KDS with Timers</li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>Swiggy & Zomato 2-Way Sync (320ms)</li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>1-Tap "86 (Out of Stock)" Kill Switch</li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>0% WhatsApp Direct Conversational Bot</li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>Zomato Hyperpure Wholesale POs</li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>Self-Ordering Customer Kiosk Mode</li>
+            <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>RestroDeck AI Copilot (Unlimited Queries)</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/919313838165?text=I%20want%20to%20get%20started%20with%20RestroDeck%20Pro%20Enterprise%20Plan" target="_blank" class="mt-6 w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3.5 rounded-xl shadow-md shadow-emerald-600/20 transition-transform active:scale-95">
+          Get Started with Pro Enterprise
+        </a>
+      </div>
+
+      <!-- PLAN 3: MULTI-CHAIN -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-slate-500">For Franchises & Multi-Outlets</span>
+          <h3 class="text-xl font-black text-slate-900 mt-1">Franchise Multi-Deck</h3>
+          <div class="my-4">
+            <span class="text-3xl font-black text-slate-900 font-mono">₹ 1,499</span>
+            <span class="text-xs text-slate-500 font-semibold">/ outlet / mo</span>
+            <p class="text-[11px] text-slate-400 mt-0.5">Multi-chain volume discounts available</p>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-4">
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Central Menu Master & Pricing Push</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Commissary Base Kitchen Indents</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Consolidated Multi-Outlet P&L</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Role-Based Manager & Auditor Access</li>
+            <li class="flex items-center"><i class="fa-solid fa-check text-emerald-600 mr-2"></i>Dedicated Account Manager 24x7</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/919313838165?text=I%20have%20multiple%20outlets%20and%20want%20RestroDeck%20Franchise%20Plan" target="_blank" class="mt-6 w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs py-3 rounded-xl transition-colors">
+          Talk to Franchise Sales
+        </a>
+      </div>
+
+    </div>
+
+    <!-- COMPREHENSIVE SUBSCRIPTION FEATURE COMPARISON TABLE -->
+    <div class="mt-16 bg-white rounded-3xl border border-slate-200/90 shadow-lg overflow-hidden max-w-5xl mx-auto">
+      <div class="p-6 sm:p-8 bg-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-400/30 px-2.5 py-1 rounded-full">Detailed Breakdown</span>
+          <h3 class="text-xl sm:text-2xl font-black text-white mt-2">Compare Subscription Features</h3>
+          <p class="text-xs text-slate-400 mt-1">Everything included in each plan with zero surprise add-on charges or per-device penalties.</p>
+        </div>
+        <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%2C%20help%20me%20choose%20the%20best%20plan%20for%20my%20outlet" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center space-x-1.5 shrink-0">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Ask Our Plan Specialist</span>
+        </a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-700 font-black uppercase tracking-wider text-[11px]">
+              <th class="py-4 px-6 w-2/5">Platform Feature</th>
+              <th class="py-4 px-4 text-center w-1/5">Starter Cloud<br><span class="text-slate-500 font-normal font-mono text-[10px]">₹599/mo</span></th>
+              <th class="py-4 px-4 text-center w-1/5 bg-emerald-50 text-emerald-900 border-x border-emerald-200">Pro Enterprise ⭐<br><span class="text-emerald-700 font-bold font-mono text-[10px]">₹799/mo</span></th>
+              <th class="py-4 px-4 text-center w-1/5">Franchise Multi-Deck<br><span class="text-slate-500 font-normal font-mono text-[10px]">₹1,499/mo</span></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-600 font-medium">
+            <!-- SECTION: BILLING & POS -->
+            <tr class="bg-slate-50/70 font-black text-slate-900 text-[11px] uppercase tracking-wider">
+              <td colspan="4" class="py-2.5 px-6"><i class="fa-solid fa-cash-register text-emerald-600 mr-2"></i>Billing, Tables & Invoices</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Billing Terminals & Counters</td>
+              <td class="py-3 px-4 text-center">Single Terminal</td>
+              <td class="py-3 px-4 text-center font-bold text-emerald-700 bg-emerald-50/40 border-x border-emerald-100">Unlimited Terminals</td>
+              <td class="py-3 px-4 text-center font-bold text-slate-900">Unlimited Terminals</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Floor Plan & Table Count</td>
+              <td class="py-3 px-4 text-center">Up to 15 Tables</td>
+              <td class="py-3 px-4 text-center font-bold text-emerald-700 bg-emerald-50/40 border-x border-emerald-100">Unlimited Tables & Sections</td>
+              <td class="py-3 px-4 text-center font-bold text-slate-900">Unlimited Tables & Sections</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">WhatsApp Digital Invoices (Zero Paper)</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i></td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Dynamic Table-Specific UPI QR Codes</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i></td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Daily Sales, Items & GST Summary Reports</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i></td>
+            </tr>
+
+            <!-- SECTION: KITCHEN & AGGREGATORS -->
+            <tr class="bg-slate-50/70 font-black text-slate-900 text-[11px] uppercase tracking-wider">
+              <td colspan="4" class="py-2.5 px-6"><i class="fa-solid fa-fire-burner text-amber-600 mr-2"></i>Kitchen Display & Online Deliveries</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Kitchen Display System (KDS) & Bump Bar</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Included</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Included</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Swiggy & Zomato 2-Way Live Sync</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Auto-Accept</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Auto-Accept</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">1-Tap "86 (Out of Stock)" Channel Switch</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Real-Time (320ms)</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Real-Time (320ms)</td>
+            </tr>
+
+            <!-- SECTION: INVENTORY & PROCUREMENT -->
+            <tr class="bg-slate-50/70 font-black text-slate-900 text-[11px] uppercase tracking-wider">
+              <td colspan="4" class="py-2.5 px-6"><i class="fa-solid fa-boxes-stacked text-teal-600 mr-2"></i>Inventory & Procurement</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Recipe-Level Stock Depletion on Every Sale</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Automated</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Automated</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Low-Stock Urgency Badges & Waste Tracking</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Included</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Included</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Zomato Hyperpure Wholesale PO Generator</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> 1-Click POs</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> 1-Click POs</td>
+            </tr>
+
+            <!-- SECTION: AUTOMATION & MULTI-BRANCH -->
+            <tr class="bg-slate-50/70 font-black text-slate-900 text-[11px] uppercase tracking-wider">
+              <td colspan="4" class="py-2.5 px-6"><i class="fa-solid fa-wand-magic-sparkles text-purple-600 mr-2"></i>Automation, AI & Franchise HQ</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Customer Self-Ordering Touch Kiosk Mode</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Included</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Included</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">RestroDeck AI Copilot (Voice & Margin Analytics)</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Pro Only</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-circle-check text-sm"></i> Unlimited AI</td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Unlimited AI</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">SuperAdmin Central Multi-Outlet Management</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-xmark text-slate-300"></i></td>
+              <td class="py-3 px-4 text-center text-slate-400 bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-xmark text-slate-300"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Central /admin HQ</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Base Kitchen Commissary & Bulk Indent Transfers</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-xmark text-slate-300"></i></td>
+              <td class="py-3 px-4 text-center text-slate-400 bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-xmark text-slate-300"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Multi-Outlet Indents</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Consolidated Franchise P&L & Royalty Tracking</td>
+              <td class="py-3 px-4 text-center text-slate-400"><i class="fa-solid fa-xmark text-slate-300"></i></td>
+              <td class="py-3 px-4 text-center text-slate-400 bg-emerald-50/40 border-x border-emerald-100"><i class="fa-solid fa-xmark text-slate-300"></i></td>
+              <td class="py-3 px-4 text-center text-emerald-600 font-bold"><i class="fa-solid fa-circle-check text-sm"></i> Group Financials</td>
+            </tr>
+            <tr class="hover:bg-slate-50/50">
+              <td class="py-3 px-6 font-bold text-slate-800">Support SLA & Account Management</td>
+              <td class="py-3 px-4 text-center">Standard Email</td>
+              <td class="py-3 px-4 text-center font-bold text-emerald-700 bg-emerald-50/40 border-x border-emerald-100">24/7 Priority WhatsApp & Call</td>
+              <td class="py-3 px-4 text-center font-bold text-purple-700">Dedicated Account Manager</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 30-MINUTE ONBOARDING & SETUP WALKTHROUGH                 -->
+  <!-- ======================================================== -->
+  <section id="onboarding" class="py-16 bg-slate-900 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
+          Frictionless 4-Step Setup
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black tracking-tight mt-3">
+          How We Onboard Your Restaurant in Under 30 Minutes
+        </h2>
+        <p class="text-slate-400 text-xs sm:text-sm font-medium mt-1">
+          Zero technical knowledge required. No waiting 2 weeks for an on-site technician.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- STEP 1 -->
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex flex-col justify-between">
+          <div>
+            <span class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center mb-4">1</span>
+            <h4 class="font-extrabold text-base text-white mb-1.5">Share Your Menu</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Snap a photo of your paper menu or send us your existing Petpooja export. Our onboarding team formats your categories, dishes, prices, and 5% GST in 15 minutes.
+            </p>
+          </div>
+          <span class="text-[10px] text-emerald-400 font-mono mt-4">⏱️ 15 Mins • 100% Free</span>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex flex-col justify-between">
+          <div>
+            <span class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center mb-4">2</span>
+            <h4 class="font-extrabold text-base text-white mb-1.5">Connect UPI & Brand</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Provide your restaurant name, address, GSTIN, and merchant UPI VPA ID (e.g. <code>bistro@okhdfcbank</code>). 100% of customer payments go straight into your bank.
+            </p>
+          </div>
+          <span class="text-[10px] text-emerald-400 font-mono mt-4">⏱️ 5 Mins • Zero Gateway Fee</span>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex flex-col justify-between">
+          <div>
+            <span class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center mb-4">3</span>
+            <h4 class="font-extrabold text-base text-white mb-1.5">Open URL on Screens</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Open <code>restrodeck.com</code> on your billing counter laptop, captain phones, and kitchen tablets. Bookmark the page or click "Add to Home Screen" to run as an app.
+            </p>
+          </div>
+          <span class="text-[10px] text-emerald-400 font-mono mt-4">⏱️ 5 Mins • Any Hardware</span>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex flex-col justify-between">
+          <div>
+            <span class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center mb-4">4</span>
+            <h4 class="font-extrabold text-base text-white mb-1.5">Print First Test KOT</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Connect your existing USB, Bluetooth, or WiFi thermal printer. Punch a test order on Table 1 to verify KOT printing and WhatsApp billing. You're officially live!
+            </p>
+          </div>
+          <span class="text-[10px] text-emerald-400 font-mono mt-4">⏱️ 5 Mins • Ready to Bill</span>
+        </div>
+
+      </div>
+
+      <!-- ONBOARDING GUARANTEE BANNER -->
+      <div class="mt-12 bg-gradient-to-r from-emerald-600 to-teal-700 p-6 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h4 class="text-lg font-black text-white">Need White-Glove Onboarding Assistance?</h4>
+          <p class="text-xs text-emerald-100 mt-0.5">Our senior restaurant technicians handle complete menu digitization and live staff training at ₹0 extra fee.</p>
+        </div>
+        <a href="https://wa.me/919313838165?text=Hi%2C%20I%20want%20white-glove%20onboarding%20setup%20for%20my%20restaurant" target="_blank" class="bg-white text-slate-900 font-black text-xs px-5 py-3 rounded-xl shrink-0 hover:bg-slate-100 transition-colors">
+          Start Onboarding on WhatsApp ➔
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- FREQUENTLY ASKED QUESTIONS (FAQS)                        -->
+  <!-- ======================================================== -->
+  <section class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-black text-slate-900 tracking-tight">Frequently Asked Questions</h2>
+      <p class="text-slate-500 text-xs sm:text-sm mt-1">Everything you need to know before switching to RestroDeck</p>
+    </div>
+
+    <div class="space-y-3.5">
+      
+      <details class="group bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <summary class="font-black text-sm text-slate-900 cursor-pointer flex justify-between items-center list-none">
+          <span>What happens if my restaurant's WiFi/Internet disconnects?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <p class="text-xs text-slate-600 leading-relaxed mt-2.5 pt-2 border-t border-slate-100">
+          RestroDeck features local browser storage caching. You can continue taking orders on tables, printing KOTs to local thermal printers, and settling bills. As soon as connectivity returns, all orders sync automatically to the cloud.
+        </p>
+      </details>
+
+      <details class="group bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <summary class="font-black text-sm text-slate-900 cursor-pointer flex justify-between items-center list-none">
+          <span>Do I need to buy new POS machines or printers?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <p class="text-xs text-slate-600 leading-relaxed mt-2.5 pt-2 border-t border-slate-100">
+          No! RestroDeck works on your existing Windows laptops, desktop PCs, iPads, Android tablets, touch terminals, and smartphones. It also supports standard 58mm and 80mm ESC/POS thermal printers (USB, LAN, and Bluetooth).
+        </p>
+      </details>
+
+      <details class="group bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <summary class="font-black text-sm text-slate-900 cursor-pointer flex justify-between items-center list-none">
+          <span>Can I import my existing menu from Petpooja?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <p class="text-xs text-slate-600 leading-relaxed mt-2.5 pt-2 border-t border-slate-100">
+          Yes! Simply send us your Petpooja menu Excel file or PDF, and our team will convert and upload all dishes, categories, taxes, and prices into your RestroDeck account within 15 minutes.
+        </p>
+      </details>
+
+      <details class="group bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <summary class="font-black text-sm text-slate-900 cursor-pointer flex justify-between items-center list-none">
+          <span>How does customer money settle with UPI?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <p class="text-xs text-slate-600 leading-relaxed mt-2.5 pt-2 border-t border-slate-100">
+          Unlike aggregators who hold your funds for 3 to 7 days, RestroDeck uses direct UPI QR codes tied to your own bank VPA. 100% of diner payments go immediately into your restaurant's bank account with 0% gateway commission.
+        </p>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- FINAL CALL TO ACTION (CTA)                               -->
+  <!-- ======================================================== -->
+  <section class="py-16 bg-slate-950 text-white text-center border-t border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <h2 class="text-3xl sm:text-4xl font-black tracking-tight">
+        Ready to Save ₹31,000+ Every Year on Restaurant Operations?
+      </h2>
+      <p class="text-slate-400 text-sm max-w-xl mx-auto leading-relaxed">
+        Test RestroDeck live right now on your screen, or schedule a free 15-minute white-glove setup with our onboarding team.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <a href="/pos" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm px-8 py-4 rounded-2xl shadow-xl shadow-emerald-600/20 transition-transform active:scale-95">
+          Launch Live Interactive POS Demo ➔
+        </a>
+        <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%2C%20I%20want%20to%20onboard%20my%20restaurant" target="_blank" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm px-7 py-4 rounded-2xl border border-slate-700 transition-colors flex items-center justify-center space-x-2">
+          <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
+          <span>Chat with Onboarding Team</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- FOOTER                                                   -->
+  <!-- ======================================================== -->
+  <footer class="bg-slate-900 text-slate-500 py-10 border-t border-slate-800 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2.5">
+        <img src="apple-touch-icon.png?v=20261102_1400" alt="RestroDeck" class="w-6 h-6 rounded-lg object-cover">
+        <span class="font-bold text-slate-300">RestroDeck Cloud POS</span>
+        <span>• restrodeck.com</span>
+      </div>
+      <div class="flex items-center space-x-5 text-slate-400">
+        <a href="/pos" class="hover:text-white">Live POS</a>
+        <a href="#advantages" class="hover:text-white">Advantages</a>
+        <a href="#pricing" class="hover:text-white">Pricing</a>
+        <a href="#onboarding" class="hover:text-white">Onboarding Guide</a>
+      </div>
+      <p class="text-slate-500">© 2026 RestroDeck. Built for modern dining.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

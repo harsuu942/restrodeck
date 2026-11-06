@@ -1,0 +1,465 @@
+{
+  "restaurant": {
+    "name": "Cafe Milano Express",
+    "tagline": "Modern Dine-in, Takeaway & Cloud Kitchen",
+    "phone": "+91 99887 76655",
+    "address": "Khar West, Mumbai",
+    "gstin": "27AADCS1234F1Z5",
+    "fssai": "11521012000456",
+    "upi_vpa": "cafemilano@icici",
+    "is_active": true,
+    "franchise_group": "cafemilano",
+    "brand_name": "Cafe Milano"
+  },
+  "categories": [
+    "Starters",
+    "Main Course",
+    "Breads",
+    "Biryani",
+    "Beverages",
+    "Desserts"
+  ],
+  "tables": [
+    {
+      "id": "T1",
+      "name": "Table 1",
+      "section": "AC Dine-in",
+      "seats": 2,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "T2",
+      "name": "Table 2",
+      "section": "AC Dine-in",
+      "seats": 4,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "T3",
+      "name": "Table 3",
+      "section": "AC Dine-in",
+      "seats": 6,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "T4",
+      "name": "Table 4",
+      "section": "AC Dine-in",
+      "seats": 4,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "T5",
+      "name": "Table 5",
+      "section": "Outdoor Lawn",
+      "seats": 4,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "T6",
+      "name": "Table 6",
+      "section": "Outdoor Lawn",
+      "seats": 8,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "TA1",
+      "name": "Takeaway 1",
+      "section": "Takeaway",
+      "seats": 0,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    },
+    {
+      "id": "WA1",
+      "name": "WhatsApp Direct 1",
+      "section": "WhatsApp Online",
+      "seats": 0,
+      "status": "vacant",
+      "current_order_id": null,
+      "seated_at": null,
+      "subtotal": null
+    }
+  ],
+  "menu": [
+    {
+      "id": "s1",
+      "name": "Paneer Tikka Angara",
+      "category": "Starters",
+      "price": 280,
+      "is_veg": true,
+      "description": "Smoky char-grilled cottage cheese with spicy marinade",
+      "variants": [
+        {
+          "name": "Regular",
+          "price": 280
+        },
+        {
+          "name": "Large (Double)",
+          "price": 490
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "name": "Chicken Malai Tikka",
+      "category": "Starters",
+      "price": 340,
+      "is_veg": false,
+      "description": "Creamy melt-in-mouth chicken infused with cardamom & cheese",
+      "variants": [
+        {
+          "name": "Half (4 pcs)",
+          "price": 220
+        },
+        {
+          "name": "Full (8 pcs)",
+          "price": 340
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "name": "Crispy Corn & Waterchestnut",
+      "category": "Starters",
+      "price": 240,
+      "is_veg": true,
+      "description": "Wok-tossed sweet corn with oriental spices and scallions",
+      "variants": []
+    },
+    {
+      "id": "s4",
+      "name": "Mutton Galouti Kebab",
+      "category": "Starters",
+      "price": 420,
+      "is_veg": false,
+      "description": "Traditional Lucknowi minced lamb kebabs served with mini parathas",
+      "variants": []
+    },
+    {
+      "id": "m1",
+      "name": "Paneer Butter Masala",
+      "category": "Main Course",
+      "price": 320,
+      "is_veg": true,
+      "description": "Rich tomato butter gravy with soft fresh paneer cubes",
+      "variants": [
+        {
+          "name": "Half",
+          "price": 210
+        },
+        {
+          "name": "Full",
+          "price": 320
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "name": "Butter Chicken (Classic)",
+      "category": "Main Course",
+      "price": 390,
+      "is_veg": false,
+      "description": "Tandoori chicken simmered in velvety makhani gravy",
+      "variants": [
+        {
+          "name": "Half (2 pcs)",
+          "price": 260
+        },
+        {
+          "name": "Full (4 pcs)",
+          "price": 390
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "name": "Dal Makhani 24-Hour",
+      "category": "Main Course",
+      "price": 260,
+      "is_veg": true,
+      "description": "Slow-cooked black lentils with white butter and fresh cream",
+      "variants": []
+    },
+    {
+      "id": "m4",
+      "name": "Mutton Rogan Josh",
+      "category": "Main Course",
+      "price": 460,
+      "is_veg": false,
+      "description": "Kashmiri-style tender mutton curry with aromatic spices",
+      "variants": []
+    },
+    {
+      "id": "b1",
+      "name": "Butter Naan",
+      "category": "Breads",
+      "price": 60,
+      "is_veg": true,
+      "description": "Crispy layered leavened bread brushed with amul butter",
+      "variants": []
+    },
+    {
+      "id": "b2",
+      "name": "Garlic Cheese Naan",
+      "category": "Breads",
+      "price": 110,
+      "is_veg": true,
+      "description": "Stuffed with melted mozzarella and roasted garlic flakes",
+      "variants": []
+    },
+    {
+      "id": "b3",
+      "name": "Tandoori Roti",
+      "category": "Breads",
+      "price": 35,
+      "is_veg": true,
+      "description": "Whole wheat bread baked in clay tandoor",
+      "variants": [
+        {
+          "name": "Plain",
+          "price": 35
+        },
+        {
+          "name": "Butter",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "id": "r1",
+      "name": "Dum Chicken Biryani",
+      "category": "Biryani",
+      "price": 360,
+      "is_veg": false,
+      "description": "Aromatic long-grain basmati with marinated chicken, served with raita",
+      "variants": []
+    },
+    {
+      "id": "r2",
+      "name": "Subz Dum Biryani",
+      "category": "Biryani",
+      "price": 290,
+      "is_veg": true,
+      "description": "Fresh vegetables and aromatic spices with saffron basmati rice",
+      "variants": []
+    },
+    {
+      "id": "r3",
+      "name": "Jeera Rice & Dal Tadka Combo",
+      "category": "Biryani",
+      "price": 240,
+      "is_veg": true,
+      "description": "Comfort bowl of cumin rice with garlic-tempered yellow lentils",
+      "variants": []
+    },
+    {
+      "id": "bev1",
+      "name": "Masala Chaas / Butter Milk",
+      "category": "Beverages",
+      "price": 70,
+      "is_veg": true,
+      "description": "Chilled spiced buttermilk with roasted cumin and mint",
+      "variants": []
+    },
+    {
+      "id": "bev2",
+      "name": "Fresh Lime Soda",
+      "category": "Beverages",
+      "price": 90,
+      "is_veg": true,
+      "description": "Sweet, salted or mixed soda with fresh mint leaves",
+      "variants": []
+    },
+    {
+      "id": "d1",
+      "name": "Gulab Jamun with Rabdi",
+      "category": "Desserts",
+      "price": 160,
+      "is_veg": true,
+      "description": "Warm khoya dumplings soaked in rose syrup topped with chilled rabdi",
+      "variants": []
+    },
+    {
+      "id": "d2",
+      "name": "Sizzling Brownie with Ice Cream",
+      "category": "Desserts",
+      "price": 220,
+      "is_veg": true,
+      "description": "Fudgy brownie on hot skillet with hot chocolate fudge sauce",
+      "variants": []
+    }
+  ],
+  "orders": [],
+  "daily_analytics": {
+    "total_revenue": 0,
+    "total_orders": 0,
+    "upi_qr_amount": 0,
+    "cash_amount": 0,
+    "whatsapp_direct_orders": 0,
+    "paper_rolls_saved": 0
+  },
+  "inventory": [
+    {
+      "id": "inv1",
+      "name": "Fresh Malai Paneer",
+      "category": "Dairy",
+      "current_stock": 14.5,
+      "unit": "kg",
+      "min_stock": 5.0,
+      "unit_cost": 340,
+      "status": "In Stock",
+      "supplier": "Hyperpure by Zomato"
+    },
+    {
+      "id": "inv2",
+      "name": "Tandoori Chicken Cut",
+      "category": "Poultry",
+      "current_stock": 22.0,
+      "unit": "kg",
+      "min_stock": 8.0,
+      "unit_cost": 210,
+      "status": "In Stock",
+      "supplier": "Hyperpure by Zomato"
+    },
+    {
+      "id": "inv3",
+      "name": "Daawat Rozana Basmati Rice",
+      "category": "Grains",
+      "current_stock": 45.0,
+      "unit": "kg",
+      "min_stock": 15.0,
+      "unit_cost": 85,
+      "status": "In Stock",
+      "supplier": "Swiggy Assure"
+    },
+    {
+      "id": "inv4",
+      "name": "Amul Table Butter (500g)",
+      "category": "Dairy",
+      "current_stock": 3.5,
+      "unit": "kg",
+      "min_stock": 4.0,
+      "unit_cost": 275,
+      "status": "Low Stock",
+      "supplier": "Hyperpure by Zomato"
+    },
+    {
+      "id": "inv5",
+      "name": "Fortune Sunlite Refined Oil",
+      "category": "Oil & Spices",
+      "current_stock": 18.0,
+      "unit": "L",
+      "min_stock": 10.0,
+      "unit_cost": 135,
+      "status": "In Stock",
+      "supplier": "Swiggy Assure"
+    },
+    {
+      "id": "inv6",
+      "name": "Biryani Handi Boxes (500ml)",
+      "category": "Packaging",
+      "current_stock": 35.0,
+      "unit": "pcs",
+      "min_stock": 50.0,
+      "unit_cost": 14,
+      "status": "Low Stock",
+      "supplier": "DeliverIT (DIY Packaging)"
+    },
+    {
+      "id": "inv7",
+      "name": "Fresh Green Chutney Mix",
+      "category": "Vegetables",
+      "current_stock": 2.0,
+      "unit": "kg",
+      "min_stock": 1.5,
+      "unit_cost": 60,
+      "status": "In Stock",
+      "supplier": "Vashi APMC Mandi (DIY)"
+    }
+  ],
+  "purchase_orders": [
+    {
+      "po_id": "PO-881",
+      "supplier": "Hyperpure by Zomato",
+      "items": "10kg Malai Paneer, 15kg Chicken",
+      "amount": 6550,
+      "status": "DISPATCHED",
+      "eta": "Today 07:00 PM"
+    },
+    {
+      "po_id": "PO-882",
+      "supplier": "Swiggy Assure",
+      "items": "2x 15L Cooking Oil, 25kg Basmati",
+      "amount": 6175,
+      "status": "DELIVERED",
+      "eta": "Delivered at 14:10"
+    },
+    {
+      "po_id": "PO-883",
+      "supplier": "DeliverIT (DIY)",
+      "items": "200x Handi Boxes, 500x Paper Bags",
+      "amount": 3800,
+      "status": "PENDING_APPROVAL",
+      "eta": "Tomorrow Morning"
+    }
+  ],
+  "aggregators": {
+    "swiggy": {
+      "status": "ONLINE",
+      "auto_accept": true,
+      "orders_today": 12,
+      "revenue_today": 4820,
+      "commission_rate": 25,
+      "commission_deducted": 1205
+    },
+    "zomato": {
+      "status": "ONLINE",
+      "auto_accept": true,
+      "orders_today": 16,
+      "revenue_today": 6340,
+      "commission_rate": 25,
+      "commission_deducted": 1585
+    },
+    "ondc": {
+      "status": "ONLINE",
+      "auto_accept": true,
+      "orders_today": 4,
+      "revenue_today": 1420,
+      "commission_rate": 5,
+      "commission_deducted": 71
+    },
+    "whatsapp": {
+      "status": "ONLINE",
+      "auto_accept": true,
+      "orders_today": 14,
+      "revenue_today": 7890,
+      "commission_rate": 0,
+      "commission_deducted": 0
+    }
+  },
+  "tenant_id": "cafemilano",
+  "created_at": "2026-11-02T18:32:42.433590",
+  "state_version": 3,
+  "is_active": true
+}

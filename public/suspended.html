@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Suspended • RestroDeck Cloud POS</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between antialiased selection:bg-rose-500 selection:text-white">
+
+  <!-- TOP BRAND NAV -->
+  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white font-black shadow-md shadow-emerald-500/20">
+          <i class="fa-solid fa-utensils text-sm"></i>
+        </div>
+        <div>
+          <span class="font-black text-white text-base tracking-tight">RESTRO<span class="text-emerald-400">DECK</span></span>
+          <span class="text-[10px] text-slate-400 font-mono block -mt-1">Cloud POS Enterprise</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <a href="/pricing" class="text-xs font-bold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 transition-colors">
+          <i class="fa-solid fa-tag text-emerald-400 mr-1.5"></i>Pricing Plans
+        </a>
+        <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%20Support%2C%20our%20account%20is%20suspended.%20Please%20help%20reactivate." target="_blank" class="text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg shadow-sm transition-transform active:scale-95 flex items-center space-x-1.5">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Help: +91 93138 38165</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN HERO NOTICE -->
+  <main class="flex-1 flex flex-col items-center justify-center px-4 py-12 max-w-4xl mx-auto w-full text-center">
+    
+    <!-- Lock Badge -->
+    <div class="relative mb-6">
+      <div class="w-24 h-24 rounded-3xl bg-rose-500/10 border-2 border-rose-500/30 flex items-center justify-center text-rose-500 text-4xl shadow-2xl shadow-rose-500/20">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <span class="absolute -bottom-2 bg-rose-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow">
+        Suspended
+      </span>
+    </div>
+
+    <!-- Restaurant Name & Status -->
+    <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight" id="outlet-name">
+      Spice Symphony Bistro & Cafe
+    </h1>
+    <p class="text-rose-400 font-bold text-sm mt-1 flex items-center justify-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+      <span>Terminal POS Access & Billing Operations Suspended</span>
+    </p>
+
+    <!-- Detailed Explanation Card -->
+    <div class="mt-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-left max-w-xl w-full shadow-xl">
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-circle-exclamation text-amber-400 text-lg mt-0.5 shrink-0"></i>
+        <div class="text-xs text-slate-300 space-y-2">
+          <p class="font-semibold text-slate-200" id="reason-text">
+            Access to this RestroDeck POS terminal has been deactivated by SuperAdmin (subscription renewal pending, billing hold, or administrative suspension).
+          </p>
+          <p class="text-slate-400 leading-relaxed">
+            All cashier billing, floor plan tables, kitchen KDS tickets, captain waiter apps, and staff logins are temporarily paused to protect your restaurant data.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIMARY ACTION BUTTONS -->
+    <div class="mt-8 flex flex-wrap gap-3 justify-center w-full max-w-md">
+      <!-- WhatsApp Support -->
+      <a id="btn-whatsapp-support" href="https://wa.me/919313838165?text=Hi%20RestroDeck%20Support%2C%20our%20restaurant%20'Spice%20Symphony%20Bistro%20%26%20Cafe'%20shows%20Account%20Suspended.%20Please%20help%20reactivate%20our%20POS." target="_blank" class="flex-1 min-w-[200px] bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm py-3.5 px-5 rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center space-x-2 transition-transform active:scale-95 cursor-pointer">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        <span>Contact Support</span>
+      </a>
+
+      <!-- View Pricing Plans -->
+      <a href="#pricing-plans" class="flex-1 min-w-[200px] bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm py-3.5 px-5 rounded-xl shadow-lg shadow-indigo-600/30 flex items-center justify-center space-x-2 transition-transform active:scale-95 cursor-pointer">
+        <i class="fa-solid fa-tags text-base"></i>
+        <span>View Pricing Plans</span>
+      </a>
+    </div>
+
+    <!-- Secondary Actions (Phone + Recheck) -->
+    <div class="mt-4 flex flex-wrap gap-2 justify-center text-xs">
+      <a href="tel:+919313838165" class="text-slate-400 hover:text-white px-3 py-2 rounded-lg border border-slate-800 hover:border-slate-700 transition-colors flex items-center space-x-1.5">
+        <i class="fa-solid fa-phone text-emerald-400"></i>
+        <span>Call Support: +91 93138 38165</span>
+      </a>
+      <button onclick="checkStatus(true)" id="btn-recheck" class="text-slate-400 hover:text-white px-3 py-2 rounded-lg border border-slate-800 hover:border-slate-700 transition-colors flex items-center space-x-1.5 cursor-pointer">
+        <i class="fa-solid fa-rotate-right" id="recheck-spinner"></i>
+        <span id="recheck-label">Check Status Again</span>
+      </button>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SUBSCRIPTION PLANS & PRICING SECTION                    -->
+    <!-- ======================================================== -->
+    <section id="pricing-plans" class="mt-16 pt-12 border-t border-slate-800/80 w-full text-left">
+      <div class="text-center mb-8">
+        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+          Subscription Renewal & Upgrades
+        </span>
+        <h2 class="text-2xl font-black text-white mt-2">Choose a Plan to Reactivate Instant POS</h2>
+        <p class="text-xs text-slate-400 mt-1">Instant activation upon renewal. Zero per-device penalties.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <!-- PLAN 1: STARTER -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-slate-700 transition-colors">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">For Small Cafes</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 font-bold px-2 py-0.5 rounded">Starter</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-1">Starter Cloud</h3>
+            <div class="my-3">
+              <span class="text-3xl font-black text-white font-mono">₹ 599</span>
+              <span class="text-xs text-slate-400 font-semibold">/ month</span>
+              <p class="text-[10px] text-slate-500 mt-0.5">Billed annually (₹ 5,999/yr)</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-800 pt-3">
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Unlimited Tables & Floor Plan</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Touch Billing & Modifiers</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>WhatsApp Digital Bills</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Unlimited Waiter Phones</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Daily Sales & GST Tax Reports</li>
+            </ul>
+          </div>
+          <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%2C%20we%20want%20to%20renew%20with%20the%20Starter%20Plan%20(₹599/mo)%20for%20our%20outlet." target="_blank" class="mt-5 w-full text-center bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center space-x-1.5">
+            <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+            <span>Renew Starter Plan</span>
+          </a>
+        </div>
+
+        <!-- PLAN 2: PRO ENTERPRISE (MOST POPULAR) -->
+        <div class="bg-gradient-to-b from-slate-900 to-emerald-950/40 border-2 border-emerald-500 rounded-2xl p-5 flex flex-col justify-between shadow-xl shadow-emerald-950/50 relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow">
+            Recommended • All Features
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">Full Service & Cloud Kitchens</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">Pro Core</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-1">Pro Enterprise</h3>
+            <div class="my-3">
+              <span class="text-3xl font-black text-emerald-400 font-mono">₹ 799</span>
+              <span class="text-xs text-slate-400 font-semibold">/ month</span>
+              <p class="text-[10px] text-emerald-300 font-bold mt-0.5">Billed annually (₹ 7,999/yr)</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-200 border-t border-emerald-500/30 pt-3">
+              <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 text-[10px]"></i><strong>Everything in Starter</strong></li>
+              <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 text-[10px]"></i>Kitchen KDS with Color Timers</li>
+              <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 text-[10px]"></i>Swiggy & Zomato 2-Way Live Sync</li>
+              <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 text-[10px]"></i>WhatsApp Conversational Ordering</li>
+              <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 text-[10px]"></i>Customer Self-Ordering Kiosk</li>
+              <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 text-[10px]"></i>AI Business Copilot Queries</li>
+            </ul>
+          </div>
+          <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%2C%20we%20want%20to%20renew%20with%20the%20Pro%20Enterprise%20Plan%20(₹799/mo)%20for%20our%20outlet." target="_blank" class="mt-5 w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs py-3 rounded-xl shadow-lg shadow-emerald-600/30 transition-transform active:scale-95 flex items-center justify-center space-x-1.5">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span>Reactivate on Pro Plan</span>
+          </a>
+        </div>
+
+        <!-- PLAN 3: FRANCHISE -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-slate-700 transition-colors">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Multi-Outlet Chains</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 font-bold px-2 py-0.5 rounded">Franchise</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-1">Franchise Multi-Deck</h3>
+            <div class="my-3">
+              <span class="text-3xl font-black text-white font-mono">₹ 1,499</span>
+              <span class="text-xs text-slate-400 font-semibold">/ outlet / mo</span>
+              <p class="text-[10px] text-slate-500 mt-0.5">Volume discounts available</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-800 pt-3">
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Central Menu & Price Push</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Base Kitchen Commissary Indents</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Consolidated Multi-Outlet P&L</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Role-Based Manager & Auditor Access</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-400 mr-2 text-[10px]"></i>Dedicated 24x7 Account Manager</li>
+            </ul>
+          </div>
+          <a href="https://wa.me/919313838165?text=Hi%20RestroDeck%2C%20we%20want%20to%20upgrade%20our%20restaurant%20chain%20to%20Franchise%20Multi-Deck." target="_blank" class="mt-5 w-full text-center bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center space-x-1.5">
+            <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+            <span>Contact Enterprise Sales</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>RestroDeck Cloud POS Enterprise • Powered by Whatslead Technologies</p>
+      <div class="flex items-center space-x-4">
+        <a href="/pricing" class="hover:text-slate-300">Pricing</a>
+        <a href="https://wa.me/919313838165" target="_blank" class="hover:text-slate-300">Support</a>
+        <a href="/admin" class="hover:text-slate-300 text-slate-600">Admin Portal</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DYNAMIC STATUS POLLER & REACTIVATION SCRIPT -->
+  <script>
+    async function checkStatus(isManual = false) {
+      const spinner = document.getElementById("recheck-spinner");
+      const label = document.getElementById("recheck-label");
+      if (spinner) spinner.classList.add("fa-spin");
+      if (label && isManual) label.innerText = "Checking...";
+
+      try {
+        const res = await fetch("/api/status", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.restaurant_name) {
+            document.getElementById("outlet-name").innerText = data.restaurant_name;
+            const waBtn = document.getElementById("btn-whatsapp-support");
+            if (waBtn) {
+              const msg = encodeURIComponent(`Hi RestroDeck Support, our restaurant '${data.restaurant_name}' is showing Account Suspended. Please help reactivate our POS.`);
+              waBtn.href = `https://wa.me/919313838165?text=${msg}`;
+            }
+          }
+          if (data.is_active === true) {
+            // Outlet has been activated by SuperAdmin! Redirect to POS!
+            window.location.href = "/";
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn("Status check failed:", err);
+      } finally {
+        setTimeout(() => {
+          if (spinner) spinner.classList.remove("fa-spin");
+          if (label) label.innerText = "Check Status Again";
+        }, 500);
+      }
+    }
+
+    // Auto-check on load and every 5 seconds so when Admin activates, it auto-unlocks!
+    document.addEventListener("DOMContentLoaded", () => {
+      checkStatus(false);
+      setInterval(() => checkStatus(false), 5000);
+    });
+  </script>
+</body>
+</html>
