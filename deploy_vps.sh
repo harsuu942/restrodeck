@@ -89,6 +89,20 @@ sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl reload nginx
 
+# 5. Open Host Firewall (Oracle Cloud iptables & ufw support)
+echo "🛡️ Configuring host firewall (opening ports 80 and 443)..."
+if command -v iptables &>/dev/null; then
+    sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT 2>/dev/null || sudo iptables -I INPUT 1 -p tcp --dport 80 -j ACCEPT 2>/dev/null || true
+    sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT 2>/dev/null || sudo iptables -I INPUT 1 -p tcp --dport 443 -j ACCEPT 2>/dev/null || true
+    sudo apt-get install -y iptables-persistent 2>/dev/null || true
+    sudo netfilter-persistent save 2>/dev/null || true
+fi
+if command -v ufw &>/dev/null; then
+    sudo ufw allow 22/tcp 2>/dev/null || true
+    sudo ufw allow 80/tcp 2>/dev/null || true
+    sudo ufw allow 443/tcp 2>/dev/null || true
+fi
+
 echo ""
 echo "=================================================="
 echo "✅ RestroDeck POS is LIVE on your server!"
