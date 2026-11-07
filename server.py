@@ -475,6 +475,18 @@ class POSRequestHandler(http.server.SimpleHTTPRequestHandler):
         _thread_context.lock = get_tenant_lock(clean_id)
         return clean_id
 
+    def do_HEAD(self):
+        url = urllib.parse.urlparse(self.path)
+        if url.path in ("/admin", "/superadmin", "/admin/"):
+            self.path = "/admin.html"
+        elif url.path in ("/landing", "/pricing", "/features", "/landing/"):
+            self.path = "/landing.html"
+        elif url.path in ("/suspended", "/suspended.html"):
+            self.path = "/suspended.html"
+        elif url.path in ("/", "/index.html", "/pos", "/app", "/pos/"):
+            self.path = "/index.html"
+        super().do_HEAD()
+
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
         query_params = urllib.parse.parse_qs(url.query)
@@ -488,16 +500,16 @@ class POSRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         t_active = DB.get("is_active", True) is not False and DB.get("restaurant", {}).get("is_active", True) is not False
 
-        if url.path in ("/admin", "/superadmin"):
+        if url.path in ("/admin", "/superadmin", "/admin/"):
             self.path = "/admin.html"
             super().do_GET()
-        elif url.path in ("/landing", "/pricing", "/features"):
+        elif url.path in ("/landing", "/pricing", "/features", "/landing/"):
             self.path = "/landing.html"
             super().do_GET()
         elif url.path in ("/suspended", "/suspended.html"):
             self.path = "/suspended.html"
             super().do_GET()
-        elif url.path in ("/", "/index.html", "/pos", "/app"):
+        elif url.path in ("/", "/index.html", "/pos", "/app", "/pos/"):
             if not t_active:
                 self.path = "/suspended.html"
             else:
